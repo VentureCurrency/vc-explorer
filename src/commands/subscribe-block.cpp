@@ -17,15 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <bitcoin/explorer/commands/fetch-header.hpp>
+#include <bitcoin/explorer/commands/subscribe-block.hpp>
 
+#include <cstddef>
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
 #include <bitcoin/client.hpp>
 #include <bitcoin/explorer/callback_state.hpp>
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/display.hpp>
-#include <bitcoin/explorer/config/encoding.hpp>
 #include <bitcoin/explorer/utility.hpp>
 
 namespace libbitcoin {
@@ -34,48 +33,36 @@ namespace commands {
 using namespace bc::client;
 using namespace bc::explorer::config;
 
-console_result fetch_header::invoke(std::ostream& output, std::ostream& error)
+console_result subscribe_block::invoke(std::ostream& output, std::ostream& error)
 {
     // Bound parameters.
-    const auto height = get_height_option();
-    const hash_digest& hash = get_hash_option();
-    const encoding& encoding = get_format_option();
-    const auto connection = get_connection(*this);
+    const auto& encoding = get_format_option();
+    const auto& server_url = get_server_url_argument();
+    const auto duration = get_duration_option();
+    auto connection = get_connection(*this);
 
-    bc::settings bitcoin_settings;
-    populate_bitcoin_settings(bitcoin_settings, *this);
-    obelisk_client client(connection, bitcoin_settings);
-
-    if (!client.connect(connection))
-    {
-        display_connection_failure(error, connection.server);
-        return console_result::failure;
-    }
+    if (!server_url.empty())
+        connection.block_server = server_url;
 
     callback_state state(error, output, encoding);
 
-    auto on_done = [&state](const chain::header& header)
+    auto on_block = [&state](const chain::block& block)
     {
-        state.output(bc::property_tree(header));
+        state.output(property_tree(bc::config::header(block.header())));
     };
 
-    auto on_error = [&state](const code& error)
+    bc::settings bitcoin_settings;
+    populate_bitcoin_settings(bitcoin_settings, *this);
+    obelisk_client client(0, 0, bitcoin_settings);
+    if (!client.subscribe_block(connection.block_server, on_block))
     {
-        state.succeeded(error);
-    };
+        output << BX_SUBSCRIBE_BLOCK_FAILED << std::endl;
+        return console_result::failure;
+    }
 
-    // Height is ignored if both are specified.
-    // Use the null_hash as sentinel to determine whether to use height or hash.
-    if (hash == null_hash)
-        client.blockchain_fetch_block_header(on_error, on_done, height);
-    else
-        client.blockchain_fetch_block_header(on_error, on_done, hash);
-
-    client.wait();
-
-    return state.get_result();
+    client.monitor(duration);
+    return console_result::okay;
 }
-
 
 } //namespace commands
 } //namespace explorer

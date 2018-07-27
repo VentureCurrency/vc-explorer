@@ -153,6 +153,8 @@
     <ClCompile Include="..\..\..\..\src\commands\stealth-public.cpp" />
     <ClCompile Include="..\..\..\..\src\commands\stealth-secret.cpp" />
     <ClCompile Include="..\..\..\..\src\commands\stealth-shared.cpp" />
+    <ClCompile Include="..\..\..\..\src\commands\subscribe-block.cpp" />
+    <ClCompile Include="..\..\..\..\src\commands\subscribe-tx.cpp" />
     <ClCompile Include="..\..\..\..\src\commands\token-new.cpp" />
     <ClCompile Include="..\..\..\..\src\commands\tx-decode.cpp" />
     <ClCompile Include="..\..\..\..\src\commands\tx-encode.cpp" />
@@ -272,6 +274,8 @@
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\stealth-public.hpp" />
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\stealth-secret.hpp" />
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\stealth-shared.hpp" />
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\subscribe-block.hpp" />
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\subscribe-tx.hpp" />
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\token-new.hpp" />
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\tx-decode.hpp" />
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\tx-encode.hpp" />
@@ -335,7 +339,7 @@
     <Import Project="$(NuGetPackageRoot)boost_regex-vc140.1.64.0.0\build\native\boost_regex-vc140.targets" Condition="Exists('$(NuGetPackageRoot)boost_regex-vc140.1.64.0.0\build\native\boost_regex-vc140.targets')" />
     <Import Project="$(NuGetPackageRoot)boost_system-vc140.1.64.0.0\build\native\boost_system-vc140.targets" Condition="Exists('$(NuGetPackageRoot)boost_system-vc140.1.64.0.0\build\native\boost_system-vc140.targets')" />
     <Import Project="$(NuGetPackageRoot)boost_thread-vc140.1.64.0.0\build\native\boost_thread-vc140.targets" Condition="Exists('$(NuGetPackageRoot)boost_thread-vc140.1.64.0.0\build\native\boost_thread-vc140.targets')" />
-    <Import Project="$(NuGetPackageRoot)secp256k1_vc140.0.1.0.15\build\native\secp256k1_vc140.targets" Condition="Exists('$(NuGetPackageRoot)secp256k1_vc140.0.1.0.15\build\native\secp256k1_vc140.targets')" />
+    <Import Project="$(NuGetPackageRoot)secp256k1-vc140.0.1.0.16\build\native\secp256k1-vc140.targets" Condition="Exists('$(NuGetPackageRoot)secp256k1-vc140.0.1.0.16\build\native\secp256k1-vc140.targets')" />
     <Import Project="$(NuGetPackageRoot)libzmq_vc140.4.2.30\build\native\libzmq_vc140.targets" Condition="Exists('$(NuGetPackageRoot)libzmq_vc140.4.2.30\build\native\libzmq_vc140.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -355,7 +359,7 @@
     <Error Condition="!Exists('$(NuGetPackageRoot)boost_regex-vc140.1.64.0.0\build\native\boost_regex-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)boost_regex-vc140.1.64.0.0\build\native\boost_regex-vc140.targets'))" />
     <Error Condition="!Exists('$(NuGetPackageRoot)boost_system-vc140.1.64.0.0\build\native\boost_system-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)boost_system-vc140.1.64.0.0\build\native\boost_system-vc140.targets'))" />
     <Error Condition="!Exists('$(NuGetPackageRoot)boost_thread-vc140.1.64.0.0\build\native\boost_thread-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)boost_thread-vc140.1.64.0.0\build\native\boost_thread-vc140.targets'))" />
-    <Error Condition="!Exists('$(NuGetPackageRoot)secp256k1_vc140.0.1.0.15\build\native\secp256k1_vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)secp256k1_vc140.0.1.0.15\build\native\secp256k1_vc140.targets'))" />
+    <Error Condition="!Exists('$(NuGetPackageRoot)secp256k1-vc140.0.1.0.16\build\native\secp256k1-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)secp256k1-vc140.0.1.0.16\build\native\secp256k1-vc140.targets'))" />
     <Error Condition="!Exists('$(NuGetPackageRoot)libzmq_vc140.4.2.30\build\native\libzmq_vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)libzmq_vc140.4.2.30\build\native\libzmq_vc140.targets'))" />
   </Target>
 </Project>

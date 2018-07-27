@@ -26,9 +26,17 @@ BX is a command line tool for working with Bitcoin. It can be built as a single 
 
 ## Installation
 
-BX can be built from sources or downloaded as a signed portable [single file executable](https://github.com/libbitcoin/libbitcoin-explorer/wiki/Download-BX).
+Libbitcoin Explorer can be built from sources or downloaded as a signed portable [single file executable](https://github.com/libbitcoin/libbitcoin-explorer/wiki/Download-BX).
 
-On Linux and Macintosh BX is built using Autotools as follows and depends on [libbitcoin-client](https://github.com/libbitcoin/libbitcoin-client).
+The master branch is a staging area for the next major release and should be used only by libbitcoin developers. The current release branch is version3. Detailed installation instructions are provided below.
+
+* [Debian/Ubuntu](#debianubuntu)
+* [Macintosh](#macintosh)
+* [Windows](#windows)
+
+### Autotools (advanced users)
+
+On Linux and macOS Libbitcoin Explorer is built using Autotools as follows and depends on [libbitcoin-client](https://github.com/libbitcoin/libbitcoin-client).
 
 ```sh
 $ ./autogen.sh
@@ -37,11 +45,6 @@ $ make
 $ sudo make install # optional
 $ sudo ldconfig     # optional
 ```
-
-Detailed instructions are provided below.
-* [Debian/Ubuntu](#debianubuntu)
-* [Macintosh](#macintosh)
-* [Windows](#windows)
 
 ### Debian/Ubuntu
 
@@ -72,22 +75,9 @@ Next install the [Boost](http://www.boost.org) (1.57.0 or newer) development pac
 ```sh
 $ sudo apt-get install libboost-all-dev
 ```
-Next install the [ZeroMQ](http://www.zeromq.org) (4.2.0 or newer) development package.
+Next install the [ZeroMQ](http://www.zeromq.org) (4.2.0 or newer) development package (if not available, build with the `--build-zmq` option):
 ```sh
-$ sudo apt-get install libzmq5
-```
-If no satisfying libzmq5 package exists in your chosen environment, the compilation can be performed with the following instructions:
-```sh
-$ mkdir build-zeromq-4.2.0
-$ pushd build-zeromq-4.2.0
-$ wget https://github.com/zeromq/libzmq/releases/download/v4.2.0/zeromq-4.2.0.tar.gz
-$ tar --extract --file zeromq-4.2.0.tar.gz --gz --strip-components=1
-$ ./autogen.sh
-$ ./configure
-$ make
-$ sudo make install
-$ sudo ldconfig
-$ popd
+$ sudo apt-get install libzmq3-dev
 ```
 Next download the [install script](https://github.com/libbitcoin/libbitcoin-explorer/blob/version3/install.sh) and enable execution:
 ```sh
@@ -135,7 +125,7 @@ Next install the [Boost](http://www.boost.org) (1.57.0 or newer) development pac
 ```sh
 $ brew install boost
 ```
-Next install the [ZeroMQ](http://www.zeromq.org) (4.2.0 or newer) development package:
+Next install the [ZeroMQ](http://www.zeromq.org) (4.2.0 or newer) development package.
 ```sh
 $ brew install zeromq
 ```
@@ -173,17 +163,9 @@ Next install the [Boost](http://www.boost.org) (1.57.0 or newer) development pac
 ```sh
 $ sudo port install boost -no_single -no_static -python27
 ```
-Next install the [ZeroMQ](http://www.zeromq.org) (4.2.0 or newer) development package. This package does not appear to be available via MacPorts, and so follows compilation instructions:
+Next install the [ZeroMQ](http://www.zeromq.org) (4.2.0 or newer) development package:
 ```sh
-$ mkdir build-zeromq-4.2.0
-$ pushd build-zeromq-4.2.0
-$ wget https://github.com/zeromq/libzmq/releases/download/v4.2.0/zeromq-4.2.0.tar.gz
-$ tar --extract --file zeromq-4.2.0.tar.gz --gz --strip-components=1
-$ ./autogen.sh
-$ ./configure
-$ make
-$ sudo make install
-$ popd
+$ sudo port install zmq
 ```
 Next download the [install script](https://github.com/libbitcoin/libbitcoin-explorer/blob/version3/install.sh) and enable execution:
 ```sh
@@ -250,7 +232,7 @@ $ sudo ./install.sh --with-bash-completion-dir
 
 #### Compiling with ICU (International Components for Unicode)
 
-Since the addition of [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) and later [BIP-38](https://github.com/bitcoin/bips/blob/master/bip-0038.mediawiki) support, libbitcoin conditionally incorporates [ICU](http://site.icu-project.org). To use the BIP-38 and BIP-39 passphrase normalization features libbitcoin must be compiled with the `--with-icu` option.
+Since the addition of [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) and later [BIP-38](https://github.com/bitcoin/bips/blob/master/bip-0038.mediawiki) and [Electrum](https://electrum.org) mnemonic support, libbitcoin conditionally incorporates [ICU](http://site.icu-project.org). To use the BIP-38 and BIP-39 passphrase normalization features libbitcoin must be compiled with the `--with-icu` option.
 ```sh
 $ ./install.sh --with-icu
 ```
@@ -283,6 +265,7 @@ Visual Studio solutions are maintained for all libbitcoin libraries and dependen
 Build these solutions in order:
 
 1. [libbitcoin/libbitcoin](https://github.com/libbitcoin/libbitcoin)
+2. [libbitcoin/libbitcoin-network](https://github.com/libbitcoin/libbitcoin-network)
 2. [libbitcoin/libbitcoin-protocol](https://github.com/libbitcoin/libbitcoin-protocol)
 3. [libbitcoin/libbitcoin-client](https://github.com/libbitcoin/libbitcoin-client)
 4. [libbitcoin/libbitcoin-explorer](https://github.com/libbitcoin/libbitcoin-explorer)
