@@ -37,6 +37,7 @@
     <setting name="pay_to_public_key_hash_version" type="byte" default="0" description="The pay-to-public-key-hash address version, defaults to 0." />
     <setting name="pay_to_script_hash_version" type="byte" default="5" description="The pay-to-script-hash address version, defaults to 5." />
     <setting name="transaction_version" type="uint32_t" default="1" description="The transaction version, defaults to 1." />
+    <setting name="rule_fork_flags" type="uint32_t" default="4294967295" description="The rule fork flags, defaults to all (4294967295)." />
   </configuration>
 
   <configuration section="network">
@@ -51,27 +52,14 @@
   </configuration>
 
   <configuration section="server">
-    <setting name="url" type="endpoint" default="tcp://mainnet.libbitcoin.net:9091" description="The URL of the Libbitcoin server." />
-    <setting name="block_url" type="endpoint" default="tcp://mainnet.libbitcoin.net:9093" description="The URL of the Libbitcoin server." />
-    <setting name="transaction_url" type="endpoint" default="tcp://mainnet.libbitcoin.net:9094" description="The URL of the Libbitcoin server." />
+    <setting name="url" type="endpoint" default="tcp://mainnet.libbitcoin.net:9091" description="The URL of the Libbitcoin query service." />
+    <setting name="block_url" type="endpoint" default="tcp://mainnet.libbitcoin.net:9093" description="The URL of the Libbitcoin block service." />
+    <setting name="transaction_url" type="endpoint" default="tcp://mainnet.libbitcoin.net:9094" description="The URL of the Libbitcoin transaction service." />
     <setting name="socks_proxy" type="authority" default="0.0.0.0:0" description="The address of a SOCKS5 proxy to use, defaults to none." />
     <setting name="connect_retries" type="byte" default="0" description="The number of times to retry contacting a server, defaults to 0." />
     <setting name="connect_timeout_seconds" default="5" type="uint16_t" description="The time limit for connection establishment, defaults to 5." />
     <setting name="server_public_key" type="sodium" description="The Z85-encoded public key of the server." />
     <setting name="client_private_key" type="sodium" description="The Z85-encoded private key of the client." />
-  </configuration>
-
-  <configuration section="bitcoin">
-    <setting name="retargeting_factor" type="uint32_t" default="4" description="The retargeting factor." />
-    <setting name="target_spacing_seconds" type="uint32_t" default="600" description="The target interval between blocks in seconds." />
-    <setting name="easy_spacing_seconds" type="uint32_t" default="1200" description="The target interval between easy blocks in seconds." />
-    <setting name="timestamp_future_seconds" type="uint32_t" default="7200" description="The amount of seconds a timestamp is allowed to be ahead of time in seconds." />
-    <setting name="target_timespan_seconds" type="uint32_t" default="1209600" description="The target timespan in seconds." />
-    <setting name="retarget_proof_of_work_limit" type="uint32_t" default="486604799" description="The proof of work limit when retargeting." />
-    <setting name="no_retarget_proof_of_work_limit" type="uint32_t" default="545259519" description="The proof of work limit." />
-    <setting name="min_timespan" type="uint32_t" default="302400" description="The minimum timespan in seconds." />
-    <setting name="max_timespan" type="uint32_t" default="4838400" description="The maximum timespan in seconds." />
-    <setting name="retargeting_interval" type="size_t" default="2016" description="The retargeting interval in blocks." />
   </configuration>
 
   <!-- General resources. -->
@@ -176,6 +164,10 @@
   <command symbol="ec-add-secrets" formerly="ec-add-modp" output="ec_private" category="MATH" description="Calculate the EC function (SECRET + SECRET) % curve-order.">
     <argument name="SECRET" stdin="true" limit="-1" type="ec_private" description="The set of Base16 secrets to add. If not specified the secrets are read from STDIN."/>
     <define name="BX_EC_ADD_SECRETS_OUT_OF_RANGE" value="Sum exceeds valid range." />
+  </command>
+
+  <command symbol="ec-decompress" output="ec_public" category="WALLET" description="Decompress a compressed EC public key.">
+    <argument name="EC_PUBLIC_KEY" stdin="true" type="ec_public" description="The Base16 EC public key to convert. If not specified the key is read from STDIN." />
   </command>
 
   <command symbol="ec-multiply" output="ec_public" category="MATH" description="Calculate the EC product (POINT * SECRET).">
@@ -453,7 +445,7 @@
 
   <command symbol="qrcode" category="WALLET" output="raw" description="Create a QRCODE image file for a payment address.">
     <option name="density" type="uint32_t" default="72" description="The pixels per inch of the QRCODE, defaults to 72." />
-    <option name="insensitive" description="Do not use use sensitivity." />
+    <option name="insensitive" description="Do not use case sensitivity." />
     <option name="module_size" type="uint32_t" default="8" description="The module size in pixels of the QRCODE, defaults to 8." />
     <option name="margin_size"  shortcut="r" type="uint32_t" default="2" description="The margin size in pixels of the QRCODE, defaults to 2." />
     <option name="png" description="Write the QRCODE in PNG file format." />
@@ -475,6 +467,7 @@
 
   <command symbol="script-decode" formerly="showscript" output="string" multipleX="true" category="TRANSACTION" description="Decode a script to plain text tokens.">
     <argument name="BASE16" fileX="true" stdin="true" type="base16" description="The Base16 script. If not specified the script is read from STDIN."/>
+    <option name="flags" type="uint32_t" configuration="wallet.rule_fork_flags" description="The rule fork flags, defaults to all (4294967295)." />
   </command>
 
   <command symbol="script-encode" formerly="rawscript" output="base16" category="TRANSACTION" description="Base16 encode a plain text script.">

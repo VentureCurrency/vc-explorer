@@ -38,7 +38,7 @@ console_result subscribe_tx::invoke(std::ostream& output, std::ostream& error)
     // Bound parameters.
     const auto& encoding = get_format_option();
     const auto& server_url = get_server_url_argument();
-    const auto duration = get_duration_option();
+    const auto duration_seconds = get_duration_option();
     auto connection = get_connection(*this);
 
     if (!server_url.empty())
@@ -51,9 +51,7 @@ console_result subscribe_tx::invoke(std::ostream& output, std::ostream& error)
         state.output(encode_base16(tx.hash()));
     };
 
-    bc::settings bitcoin_settings;
-    populate_bitcoin_settings(bitcoin_settings, *this);
-    obelisk_client client(0, 0, bitcoin_settings);
+    obelisk_client client(connection.retries);
     if (!client.subscribe_transaction(connection.transaction_server,
         on_transaction))
     {
@@ -61,7 +59,7 @@ console_result subscribe_tx::invoke(std::ostream& output, std::ostream& error)
         return console_result::failure;
     }
 
-    client.monitor(duration);
+    client.monitor(duration_seconds * 1000);
     return console_result::okay;
 }
 

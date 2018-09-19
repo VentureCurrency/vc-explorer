@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef BX_SCRIPT_DECODE_HPP
-#define BX_SCRIPT_DECODE_HPP
+#ifndef BX_EC_DECOMPRESS_HPP
+#define BX_EC_DECOMPRESS_HPP
 
 #include <cstdint>
 #include <iostream>
@@ -52,9 +52,9 @@ namespace explorer {
 namespace commands {
 
 /**
- * Class to implement the script-decode command.
+ * Class to implement the ec-decompress command.
  */
-class BCX_API script_decode
+class BCX_API ec_decompress
   : public command
 {
 public:
@@ -64,23 +64,16 @@ public:
      */
     static const char* symbol()
     {
-        return "script-decode";
+        return "ec-decompress";
     }
 
-    /**
-     * The symbolic (not localizable) former command name, lower case.
-     */
-    static const char* formerly()
-    {
-        return "showscript";
-    }
 
     /**
      * The member symbolic (not localizable) command name, lower case.
      */
     virtual const char* name()
     {
-        return script_decode::symbol();
+        return ec_decompress::symbol();
     }
 
     /**
@@ -88,7 +81,7 @@ public:
      */
     virtual const char* category()
     {
-        return "TRANSACTION";
+        return "WALLET";
     }
 
     /**
@@ -96,7 +89,7 @@ public:
      */
     virtual const char* description()
     {
-        return "Decode a script to plain text tokens.";
+        return "Decompress a compressed EC public key.";
     }
 
     /**
@@ -107,7 +100,7 @@ public:
     virtual arguments_metadata& load_arguments()
     {
         return get_argument_metadata()
-            .add("BASE16", 1);
+            .add("EC_PUBLIC_KEY", 1);
     }
 
 	/**
@@ -119,7 +112,7 @@ public:
         po::variables_map& variables)
     {
         const auto raw = requires_raw_input();
-        load_input(get_base16_argument(), "BASE16", variables, input, raw);
+        load_input(get_ec_public_key_argument(), "EC_PUBLIC_KEY", variables, input, raw);
     }
 
     /**
@@ -143,14 +136,9 @@ public:
             "The path to the configuration settings file."
         )
         (
-            "flags,f",
-            value<uint32_t>(&option_.flags)->default_value(4294967295),
-            "The rule fork flags, defaults to all (4294967295)."
-        )
-        (
-            "BASE16",
-            value<bc::config::base16>(&argument_.base16),
-            "The Base16 script. If not specified the script is read from STDIN."
+            "EC_PUBLIC_KEY",
+            value<bc::wallet::ec_public>(&argument_.ec_public_key),
+            "The Base16 EC public key to convert. If not specified the key is read from STDIN."
         );
 
         return options;
@@ -162,12 +150,6 @@ public:
      */
     virtual void set_defaults_from_config(po::variables_map& variables)
     {
-        const auto& option_flags = variables["flags"];
-        const auto& option_flags_config = variables["wallet.rule_fork_flags"];
-        if (option_flags.defaulted() && !option_flags_config.defaulted())
-        {
-            option_.flags = option_flags_config.as<uint32_t>();
-        }
     }
 
     /**
@@ -182,37 +164,20 @@ public:
     /* Properties */
 
     /**
-     * Get the value of the BASE16 argument.
+     * Get the value of the EC_PUBLIC_KEY argument.
      */
-    virtual bc::config::base16& get_base16_argument()
+    virtual bc::wallet::ec_public& get_ec_public_key_argument()
     {
-        return argument_.base16;
+        return argument_.ec_public_key;
     }
 
     /**
-     * Set the value of the BASE16 argument.
+     * Set the value of the EC_PUBLIC_KEY argument.
      */
-    virtual void set_base16_argument(
-        const bc::config::base16& value)
+    virtual void set_ec_public_key_argument(
+        const bc::wallet::ec_public& value)
     {
-        argument_.base16 = value;
-    }
-
-    /**
-     * Get the value of the flags option.
-     */
-    virtual uint32_t& get_flags_option()
-    {
-        return option_.flags;
-    }
-
-    /**
-     * Set the value of the flags option.
-     */
-    virtual void set_flags_option(
-        const uint32_t& value)
-    {
-        option_.flags = value;
+        argument_.ec_public_key = value;
     }
 
 private:
@@ -225,11 +190,11 @@ private:
     struct argument
     {
         argument()
-          : base16()
+          : ec_public_key()
         {
         }
 
-        bc::config::base16 base16;
+        bc::wallet::ec_public ec_public_key;
     } argument_;
 
     /**
@@ -240,11 +205,9 @@ private:
     struct option
     {
         option()
-          : flags()
         {
         }
 
-        uint32_t flags;
     } option_;
 };
 

@@ -220,6 +220,11 @@ public:
             "The transaction version, defaults to 1."
         )
         (
+            "wallet.rule_fork_flags",
+            value<uint32_t>(&setting_.wallet.rule_fork_flags)->default_value(4294967295),
+            "The rule fork flags, defaults to all (4294967295)."
+        )
+        (
             "network.identifier",
             value<uint32_t>(&setting_.network.identifier)->default_value(3652501241),
             "The magic number for message headers, defaults to 3652501241."
@@ -262,17 +267,17 @@ public:
         (
             "server.url",
             value<bc::config::endpoint>(&setting_.server.url)->default_value({ "tcp://mainnet.libbitcoin.net:9091" }),
-            "The URL of the Libbitcoin server."
+            "The URL of the Libbitcoin query service."
         )
         (
             "server.block_url",
             value<bc::config::endpoint>(&setting_.server.block_url)->default_value({ "tcp://mainnet.libbitcoin.net:9093" }),
-            "The URL of the Libbitcoin server."
+            "The URL of the Libbitcoin block service."
         )
         (
             "server.transaction_url",
             value<bc::config::endpoint>(&setting_.server.transaction_url)->default_value({ "tcp://mainnet.libbitcoin.net:9094" }),
-            "The URL of the Libbitcoin server."
+            "The URL of the Libbitcoin transaction service."
         )
         (
             "server.socks_proxy",
@@ -298,56 +303,6 @@ public:
             "server.client_private_key",
             value<bc::config::sodium>(&setting_.server.client_private_key),
             "The Z85-encoded private key of the client."
-        )
-        (
-            "bitcoin.retargeting_factor",
-            value<uint32_t>(&setting_.bitcoin.retargeting_factor)->default_value(4),
-            "The retargeting factor."
-        )
-        (
-            "bitcoin.target_spacing_seconds",
-            value<uint32_t>(&setting_.bitcoin.target_spacing_seconds)->default_value(600),
-            "The target interval between blocks in seconds."
-        )
-        (
-            "bitcoin.easy_spacing_seconds",
-            value<uint32_t>(&setting_.bitcoin.easy_spacing_seconds)->default_value(1200),
-            "The target interval between easy blocks in seconds."
-        )
-        (
-            "bitcoin.timestamp_future_seconds",
-            value<uint32_t>(&setting_.bitcoin.timestamp_future_seconds)->default_value(7200),
-            "The amount of seconds a timestamp is allowed to be ahead of time in seconds."
-        )
-        (
-            "bitcoin.target_timespan_seconds",
-            value<uint32_t>(&setting_.bitcoin.target_timespan_seconds)->default_value(1209600),
-            "The target timespan in seconds."
-        )
-        (
-            "bitcoin.retarget_proof_of_work_limit",
-            value<uint32_t>(&setting_.bitcoin.retarget_proof_of_work_limit)->default_value(486604799),
-            "The proof of work limit when retargeting."
-        )
-        (
-            "bitcoin.no_retarget_proof_of_work_limit",
-            value<uint32_t>(&setting_.bitcoin.no_retarget_proof_of_work_limit)->default_value(545259519),
-            "The proof of work limit."
-        )
-        (
-            "bitcoin.min_timespan",
-            value<uint32_t>(&setting_.bitcoin.min_timespan)->default_value(302400),
-            "The minimum timespan in seconds."
-        )
-        (
-            "bitcoin.max_timespan",
-            value<uint32_t>(&setting_.bitcoin.max_timespan)->default_value(4838400),
-            "The maximum timespan in seconds."
-        )
-        (
-            "bitcoin.retargeting_interval",
-            value<size_t>(&setting_.bitcoin.retargeting_interval)->default_value(2016),
-            "The retargeting interval in blocks."
         );
     }
 
@@ -494,6 +449,22 @@ public:
     virtual void set_wallet_transaction_version_setting(uint32_t value)
     {
         setting_.wallet.transaction_version = value;
+    }
+
+    /**
+     * Get the value of the wallet.rule_fork_flags setting.
+     */
+    virtual uint32_t get_wallet_rule_fork_flags_setting() const
+    {
+        return setting_.wallet.rule_fork_flags;
+    }
+
+    /**
+     * Set the value of the wallet.rule_fork_flags setting.
+     */
+    virtual void set_wallet_rule_fork_flags_setting(uint32_t value)
+    {
+        setting_.wallet.rule_fork_flags = value;
     }
 
     /**
@@ -752,166 +723,6 @@ public:
         setting_.server.client_private_key = value;
     }
 
-    /**
-     * Get the value of the bitcoin.retargeting_factor setting.
-     */
-    virtual uint32_t get_bitcoin_retargeting_factor_setting() const
-    {
-        return setting_.bitcoin.retargeting_factor;
-    }
-
-    /**
-     * Set the value of the bitcoin.retargeting_factor setting.
-     */
-    virtual void set_bitcoin_retargeting_factor_setting(uint32_t value)
-    {
-        setting_.bitcoin.retargeting_factor = value;
-    }
-
-    /**
-     * Get the value of the bitcoin.target_spacing_seconds setting.
-     */
-    virtual uint32_t get_bitcoin_target_spacing_seconds_setting() const
-    {
-        return setting_.bitcoin.target_spacing_seconds;
-    }
-
-    /**
-     * Set the value of the bitcoin.target_spacing_seconds setting.
-     */
-    virtual void set_bitcoin_target_spacing_seconds_setting(uint32_t value)
-    {
-        setting_.bitcoin.target_spacing_seconds = value;
-    }
-
-    /**
-     * Get the value of the bitcoin.easy_spacing_seconds setting.
-     */
-    virtual uint32_t get_bitcoin_easy_spacing_seconds_setting() const
-    {
-        return setting_.bitcoin.easy_spacing_seconds;
-    }
-
-    /**
-     * Set the value of the bitcoin.easy_spacing_seconds setting.
-     */
-    virtual void set_bitcoin_easy_spacing_seconds_setting(uint32_t value)
-    {
-        setting_.bitcoin.easy_spacing_seconds = value;
-    }
-
-    /**
-     * Get the value of the bitcoin.timestamp_future_seconds setting.
-     */
-    virtual uint32_t get_bitcoin_timestamp_future_seconds_setting() const
-    {
-        return setting_.bitcoin.timestamp_future_seconds;
-    }
-
-    /**
-     * Set the value of the bitcoin.timestamp_future_seconds setting.
-     */
-    virtual void set_bitcoin_timestamp_future_seconds_setting(uint32_t value)
-    {
-        setting_.bitcoin.timestamp_future_seconds = value;
-    }
-
-    /**
-     * Get the value of the bitcoin.target_timespan_seconds setting.
-     */
-    virtual uint32_t get_bitcoin_target_timespan_seconds_setting() const
-    {
-        return setting_.bitcoin.target_timespan_seconds;
-    }
-
-    /**
-     * Set the value of the bitcoin.target_timespan_seconds setting.
-     */
-    virtual void set_bitcoin_target_timespan_seconds_setting(uint32_t value)
-    {
-        setting_.bitcoin.target_timespan_seconds = value;
-    }
-
-    /**
-     * Get the value of the bitcoin.retarget_proof_of_work_limit setting.
-     */
-    virtual uint32_t get_bitcoin_retarget_proof_of_work_limit_setting() const
-    {
-        return setting_.bitcoin.retarget_proof_of_work_limit;
-    }
-
-    /**
-     * Set the value of the bitcoin.retarget_proof_of_work_limit setting.
-     */
-    virtual void set_bitcoin_retarget_proof_of_work_limit_setting(uint32_t value)
-    {
-        setting_.bitcoin.retarget_proof_of_work_limit = value;
-    }
-
-    /**
-     * Get the value of the bitcoin.no_retarget_proof_of_work_limit setting.
-     */
-    virtual uint32_t get_bitcoin_no_retarget_proof_of_work_limit_setting() const
-    {
-        return setting_.bitcoin.no_retarget_proof_of_work_limit;
-    }
-
-    /**
-     * Set the value of the bitcoin.no_retarget_proof_of_work_limit setting.
-     */
-    virtual void set_bitcoin_no_retarget_proof_of_work_limit_setting(uint32_t value)
-    {
-        setting_.bitcoin.no_retarget_proof_of_work_limit = value;
-    }
-
-    /**
-     * Get the value of the bitcoin.min_timespan setting.
-     */
-    virtual uint32_t get_bitcoin_min_timespan_setting() const
-    {
-        return setting_.bitcoin.min_timespan;
-    }
-
-    /**
-     * Set the value of the bitcoin.min_timespan setting.
-     */
-    virtual void set_bitcoin_min_timespan_setting(uint32_t value)
-    {
-        setting_.bitcoin.min_timespan = value;
-    }
-
-    /**
-     * Get the value of the bitcoin.max_timespan setting.
-     */
-    virtual uint32_t get_bitcoin_max_timespan_setting() const
-    {
-        return setting_.bitcoin.max_timespan;
-    }
-
-    /**
-     * Set the value of the bitcoin.max_timespan setting.
-     */
-    virtual void set_bitcoin_max_timespan_setting(uint32_t value)
-    {
-        setting_.bitcoin.max_timespan = value;
-    }
-
-    /**
-     * Get the value of the bitcoin.retargeting_interval setting.
-     */
-    virtual size_t get_bitcoin_retargeting_interval_setting() const
-    {
-        return setting_.bitcoin.retargeting_interval;
-    }
-
-    /**
-     * Set the value of the bitcoin.retargeting_interval setting.
-     */
-    virtual void set_bitcoin_retargeting_interval_setting(size_t value)
-    {
-        setting_.bitcoin.retargeting_interval = value;
-    }
-
 protected:
 
     /**
@@ -962,7 +773,8 @@ private:
                 hd_secret_version(),
                 pay_to_public_key_hash_version(),
                 pay_to_script_hash_version(),
-                transaction_version()
+                transaction_version(),
+                rule_fork_flags()
             {
             }
 
@@ -972,6 +784,7 @@ private:
             explorer::config::byte pay_to_public_key_hash_version;
             explorer::config::byte pay_to_script_hash_version;
             uint32_t transaction_version;
+            uint32_t rule_fork_flags;
         } wallet;
 
         struct network
@@ -1022,39 +835,10 @@ private:
             bc::config::sodium client_private_key;
         } server;
 
-        struct bitcoin
-        {
-            bitcoin()
-              : retargeting_factor(),
-                target_spacing_seconds(),
-                easy_spacing_seconds(),
-                timestamp_future_seconds(),
-                target_timespan_seconds(),
-                retarget_proof_of_work_limit(),
-                no_retarget_proof_of_work_limit(),
-                min_timespan(),
-                max_timespan(),
-                retargeting_interval()
-            {
-            }
-
-            uint32_t retargeting_factor;
-            uint32_t target_spacing_seconds;
-            uint32_t easy_spacing_seconds;
-            uint32_t timestamp_future_seconds;
-            uint32_t target_timespan_seconds;
-            uint32_t retarget_proof_of_work_limit;
-            uint32_t no_retarget_proof_of_work_limit;
-            uint32_t min_timespan;
-            uint32_t max_timespan;
-            size_t retargeting_interval;
-        } bitcoin;
-
         setting()
           : wallet(),
             network(),
-            server(),
-            bitcoin()
+            server()
         {
         }
     } setting_;

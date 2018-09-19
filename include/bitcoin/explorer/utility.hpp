@@ -121,21 +121,11 @@ void write_file(std::ostream& output, const std::string& path,
     const Instance& instance, bool terminate=true);
 
 /**
- * Populate the bc::settings object with settings from command.
- * @param      Command           The type of the command.
- * @param[out] bitcoin_settings  The bitcoin settings.
- * @param[in]  command           The command.
- */
-template<typename Command>
-void populate_bitcoin_settings(bc::settings& bitcoin_settings,
-    const Command& command);
-
-/**
  * Get the connection settings for the configured network.
  * @param    command  The command.
  * @returns           A structure containing the connection settings.
  */
-BCX_API client::connection_type get_connection(const command& command);
+BCX_API client::connection_settings get_connection(const command& command);
 
 /**
  * Generate a new ec key from a seed.

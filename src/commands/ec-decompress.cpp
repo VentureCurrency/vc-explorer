@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2018 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <bitcoin/explorer/commands/script-decode.hpp>
+#include <bitcoin/explorer/commands/ec-decompress.hpp>
 
 #include <iostream>
 #include <bitcoin/bitcoin.hpp>
@@ -25,16 +25,15 @@
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
-using namespace bc::config;
+using namespace bc;
+using namespace bc::wallet;
 
-console_result script_decode::invoke(std::ostream& output, std::ostream& error)
+console_result ec_decompress::invoke(std::ostream& output, std::ostream& error)
 {
     // Bound parameters.
-    const auto& base16 = get_base16_argument();
-    const auto& rule_fork_flags = get_flags_option();
+    const auto& point = get_ec_public_key_argument();
 
-    // Any array of bytes produces a valid script.
-    output << script(base16).to_string(rule_fork_flags) << std::endl;
+    output << ec_public(point, false) << std::endl;
     return console_result::okay;
 }
 
