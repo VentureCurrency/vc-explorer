@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -30,8 +30,10 @@
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
+
 using namespace bc::client;
 using namespace bc::explorer::config;
+using namespace bc::system;
 
 console_result subscribe_block::invoke(std::ostream& output, std::ostream& error)
 {
@@ -48,7 +50,7 @@ console_result subscribe_block::invoke(std::ostream& output, std::ostream& error
 
     auto on_block = [&state](const chain::block& block)
     {
-        state.output(property_tree(bc::config::header(block.header())));
+        state.output(property_tree(system::config::header(block.header())));
     };
 
     obelisk_client client(connection.retries);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -41,6 +41,11 @@ BOOST_AUTO_TEST_CASE(generated__find__address_embed__returns_object)
 BOOST_AUTO_TEST_CASE(generated__find__address_encode__returns_object)
 {
     BOOST_REQUIRE(find("address-encode") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__address_to_key__returns_object)
+{
+    BOOST_REQUIRE(find("address-to-key") != nullptr);
 }
 
 BOOST_AUTO_TEST_CASE(generated__find__base16_decode__returns_object)
@@ -91,6 +96,11 @@ BOOST_AUTO_TEST_CASE(generated__find__bitcoin160__returns_object)
 BOOST_AUTO_TEST_CASE(generated__find__bitcoin256__returns_object)
 {
     BOOST_REQUIRE(find("bitcoin256") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__broadcast_tx__returns_object)
+{
+    BOOST_REQUIRE(find("broadcast-tx") != nullptr);
 }
 
 BOOST_AUTO_TEST_CASE(generated__find__btc_to_satoshi__returns_object)
@@ -158,6 +168,11 @@ BOOST_AUTO_TEST_CASE(generated__find__ec_to_wif__returns_object)
     BOOST_REQUIRE(find("ec-to-wif") != nullptr);
 }
 
+BOOST_AUTO_TEST_CASE(generated__find__ec_to_witness__returns_object)
+{
+    BOOST_REQUIRE(find("ec-to-witness") != nullptr);
+}
+
 BOOST_AUTO_TEST_CASE(generated__find__ek_address__returns_object)
 {
     BOOST_REQUIRE(find("ek-address") != nullptr);
@@ -208,6 +223,36 @@ BOOST_AUTO_TEST_CASE(generated__find__fetch_balance__returns_object)
     BOOST_REQUIRE(find("fetch-balance") != nullptr);
 }
 
+BOOST_AUTO_TEST_CASE(generated__find__fetch_block__returns_object)
+{
+    BOOST_REQUIRE(find("fetch-block") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__fetch_block_hashes__returns_object)
+{
+    BOOST_REQUIRE(find("fetch-block-hashes") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__fetch_block_height__returns_object)
+{
+    BOOST_REQUIRE(find("fetch-block-height") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__fetch_filter__returns_object)
+{
+    BOOST_REQUIRE(find("fetch-filter") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__fetch_filter_checkpoint__returns_object)
+{
+    BOOST_REQUIRE(find("fetch-filter-checkpoint") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__fetch_filter_headers__returns_object)
+{
+    BOOST_REQUIRE(find("fetch-filter-headers") != nullptr);
+}
+
 BOOST_AUTO_TEST_CASE(generated__find__fetch_header__returns_object)
 {
     BOOST_REQUIRE(find("fetch-header") != nullptr);
@@ -228,11 +273,6 @@ BOOST_AUTO_TEST_CASE(generated__find__fetch_public_key__returns_object)
     BOOST_REQUIRE(find("fetch-public-key") != nullptr);
 }
 
-BOOST_AUTO_TEST_CASE(generated__find__fetch_stealth__returns_object)
-{
-    BOOST_REQUIRE(find("fetch-stealth") != nullptr);
-}
-
 BOOST_AUTO_TEST_CASE(generated__find__fetch_tx__returns_object)
 {
     BOOST_REQUIRE(find("fetch-tx") != nullptr);
@@ -246,6 +286,21 @@ BOOST_AUTO_TEST_CASE(generated__find__fetch_tx_index__returns_object)
 BOOST_AUTO_TEST_CASE(generated__find__fetch_utxo__returns_object)
 {
     BOOST_REQUIRE(find("fetch-utxo") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__get_filter_checkpoint__returns_object)
+{
+    BOOST_REQUIRE(find("get-filter-checkpoint") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__get_filter_headers__returns_object)
+{
+    BOOST_REQUIRE(find("get-filter-headers") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__get_filters__returns_object)
+{
+    BOOST_REQUIRE(find("get-filters") != nullptr);
 }
 
 BOOST_AUTO_TEST_CASE(generated__find__hd_new__returns_object)
@@ -303,6 +358,16 @@ BOOST_AUTO_TEST_CASE(generated__find__input_validate__returns_object)
     BOOST_REQUIRE(find("input-validate") != nullptr);
 }
 
+BOOST_AUTO_TEST_CASE(generated__find__match_neutrino_address__returns_object)
+{
+    BOOST_REQUIRE(find("match-neutrino-address") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__match_neutrino_script__returns_object)
+{
+    BOOST_REQUIRE(find("match-neutrino-script") != nullptr);
+}
+
 BOOST_AUTO_TEST_CASE(generated__find__message_sign__returns_object)
 {
     BOOST_REQUIRE(find("message-sign") != nullptr);
@@ -331,6 +396,11 @@ BOOST_AUTO_TEST_CASE(generated__find__mnemonic_new__returns_object)
 BOOST_AUTO_TEST_CASE(generated__find__mnemonic_to_seed__returns_object)
 {
     BOOST_REQUIRE(find("mnemonic-to-seed") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__put_tx__returns_object)
+{
+    BOOST_REQUIRE(find("put-tx") != nullptr);
 }
 
 BOOST_AUTO_TEST_CASE(generated__find__qrcode__returns_object)
@@ -363,6 +433,11 @@ BOOST_AUTO_TEST_CASE(generated__find__script_to_address__returns_object)
     BOOST_REQUIRE(find("script-to-address") != nullptr);
 }
 
+BOOST_AUTO_TEST_CASE(generated__find__script_to_key__returns_object)
+{
+    BOOST_REQUIRE(find("script-to-key") != nullptr);
+}
+
 BOOST_AUTO_TEST_CASE(generated__find__seed__returns_object)
 {
     BOOST_REQUIRE(find("seed") != nullptr);
@@ -371,16 +446,6 @@ BOOST_AUTO_TEST_CASE(generated__find__seed__returns_object)
 BOOST_AUTO_TEST_CASE(generated__find__send_tx__returns_object)
 {
     BOOST_REQUIRE(find("send-tx") != nullptr);
-}
-
-BOOST_AUTO_TEST_CASE(generated__find__send_tx_node__returns_object)
-{
-    BOOST_REQUIRE(find("send-tx-node") != nullptr);
-}
-
-BOOST_AUTO_TEST_CASE(generated__find__send_tx_p2p__returns_object)
-{
-    BOOST_REQUIRE(find("send-tx-p2p") != nullptr);
 }
 
 BOOST_AUTO_TEST_CASE(generated__find__settings__returns_object)
@@ -473,14 +538,14 @@ BOOST_AUTO_TEST_CASE(generated__find__validate_tx__returns_object)
     BOOST_REQUIRE(find("validate-tx") != nullptr);
 }
 
-BOOST_AUTO_TEST_CASE(generated__find__watch_address__returns_object)
+BOOST_AUTO_TEST_CASE(generated__find__version__returns_object)
 {
-    BOOST_REQUIRE(find("watch-address") != nullptr);
+    BOOST_REQUIRE(find("version") != nullptr);
 }
 
-BOOST_AUTO_TEST_CASE(generated__find__watch_stealth__returns_object)
+BOOST_AUTO_TEST_CASE(generated__find__watch_key__returns_object)
 {
-    BOOST_REQUIRE(find("watch-stealth") != nullptr);
+    BOOST_REQUIRE(find("watch-key") != nullptr);
 }
 
 BOOST_AUTO_TEST_CASE(generated__find__watch_tx__returns_object)
@@ -496,6 +561,11 @@ BOOST_AUTO_TEST_CASE(generated__find__wif_to_ec__returns_object)
 BOOST_AUTO_TEST_CASE(generated__find__wif_to_public__returns_object)
 {
     BOOST_REQUIRE(find("wif-to-public") != nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(generated__find__witness_to_key__returns_object)
+{
+    BOOST_REQUIRE(find("witness-to-key") != nullptr);
 }
 
 BOOST_AUTO_TEST_CASE(generated__find__wrap_decode__returns_object)

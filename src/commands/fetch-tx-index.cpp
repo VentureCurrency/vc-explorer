@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -21,20 +21,20 @@
 
 #include <iostream>
 #include <boost/format.hpp>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/callback_state.hpp>
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/display.hpp>
-#include <bitcoin/explorer/prop_tree.hpp>
 #include <bitcoin/explorer/utility.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
+
 using namespace bc::client;
 using namespace bc::explorer::config;
+using namespace bc::system;
 
-// This call is deprecated at the server.
 console_result fetch_tx_index::invoke(std::ostream& output, std::ostream& error)
 {
     // Bound parameters.
@@ -56,7 +56,7 @@ console_result fetch_tx_index::invoke(std::ostream& output, std::ostream& error)
         if (!state.succeeded(ec))
             return;
 
-        state.output(prop_tree(hash, height, index));
+        state.output(system::property_tree(hash, height, index));
     };
 
     client.blockchain_fetch_transaction_index(on_done, hash);
@@ -64,7 +64,6 @@ console_result fetch_tx_index::invoke(std::ostream& output, std::ostream& error)
 
     return state.get_result();
 }
-
 
 } //namespace commands
 } //namespace explorer

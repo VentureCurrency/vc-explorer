@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -19,13 +19,15 @@
 #include <bitcoin/explorer/commands/script-to-address.hpp>
 
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
-using namespace bc::wallet;
+
+using namespace bc::system;
+using namespace bc::system::wallet;
 
 console_result script_to_address::invoke(std::ostream& output, std::ostream& error)
 {
@@ -33,9 +35,7 @@ console_result script_to_address::invoke(std::ostream& output, std::ostream& err
     const auto& script = get_script_argument();
     const auto version = get_version_option();
 
-    const payment_address address(script, version);
-
-    output << address << std::endl;
+    output << payment_address(script, version) << std::endl;
     return console_result::okay;
 }
 

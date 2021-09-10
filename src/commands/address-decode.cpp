@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -19,15 +19,16 @@
 #include <bitcoin/explorer/commands/address-decode.hpp>
 
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/prop_tree.hpp>
-#include <bitcoin/explorer/config/wrapper.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
+
 using namespace bc::explorer::config;
+using namespace bc::system;
 
 console_result address_decode::invoke(std::ostream& output,
     std::ostream& error)
@@ -36,8 +37,8 @@ console_result address_decode::invoke(std::ostream& output,
     const auto& address = get_payment_address_argument();
     const auto& encoding = get_format_option();
 
-    const wrapper wrapped(address);
-    write_stream(output, prop_tree(wrapped), encoding);
+    const config::wrapper wrapped(address);
+    write_stream(output, property_tree(wrapped), encoding);
 
     return console_result::okay;
 }

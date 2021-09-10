@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
- |  Copyright (c) 2014-2015 libbitcoin-explorer developers (see COPYING).
+ |  Copyright (c) 2014-2020 libbitcoin-explorer developers (see COPYING).
  |
  |         GENERATED SOURCE CODE, DO NOT EDIT EXCEPT EXPERIMENTALLY
  |
@@ -51,6 +51,9 @@
     <ClCompile Include="..\..\..\..\src\commands\address-encode.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\address-to-key.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\base16-decode.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
@@ -79,6 +82,9 @@
       <Filter>src\commands</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\bitcoin256.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\broadcast-tx.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\btc-to-satoshi.cpp">
@@ -120,6 +126,9 @@
     <ClCompile Include="..\..\..\..\src\commands\ec-to-wif.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\ec-to-witness.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\ek-address.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
@@ -150,6 +159,24 @@
     <ClCompile Include="..\..\..\..\src\commands\fetch-balance.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\fetch-block-hashes.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\fetch-block-height.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\fetch-block.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\fetch-filter-checkpoint.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\fetch-filter-headers.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\fetch-filter.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\fetch-header.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
@@ -162,9 +189,6 @@
     <ClCompile Include="..\..\..\..\src\commands\fetch-public-key.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\commands\fetch-stealth.cpp">
-      <Filter>src\commands</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\fetch-tx-index.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
@@ -172,6 +196,15 @@
       <Filter>src\commands</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\fetch-utxo.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\get-filter-checkpoint.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\get-filter-headers.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\get-filters.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\hd-new.cpp">
@@ -207,6 +240,12 @@
     <ClCompile Include="..\..\..\..\src\commands\input-validate.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\match-neutrino-address.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\match-neutrino-script.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\message-sign.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
@@ -223,6 +262,9 @@
       <Filter>src\commands</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\mnemonic-to-seed.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\put-tx.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\qrcode.cpp">
@@ -243,13 +285,10 @@
     <ClCompile Include="..\..\..\..\src\commands\script-to-address.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\script-to-key.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\seed.cpp">
-      <Filter>src\commands</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\commands\send-tx-node.cpp">
-      <Filter>src\commands</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\commands\send-tx-p2p.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\send-tx.cpp">
@@ -309,10 +348,10 @@
     <ClCompile Include="..\..\..\..\src\commands\validate-tx.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\commands\watch-address.cpp">
+    <ClCompile Include="..\..\..\..\src\commands\version.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\commands\watch-stealth.cpp">
+    <ClCompile Include="..\..\..\..\src\commands\watch-key.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\watch-tx.cpp">
@@ -324,6 +363,9 @@
     <ClCompile Include="..\..\..\..\src\commands\wif-to-public.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\commands\witness-to-key.cpp">
+      <Filter>src\commands</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\commands\wrap-decode.cpp">
       <Filter>src\commands</Filter>
     </ClCompile>
@@ -331,6 +373,9 @@
       <Filter>src\commands</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\config\address.cpp">
+      <Filter>src\config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\config\address_format.cpp">
       <Filter>src\config</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\config\algorithm.cpp">
@@ -413,6 +458,9 @@
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\address-encode.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\address-to-key.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\base16-decode.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
@@ -441,6 +489,9 @@
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\bitcoin256.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\broadcast-tx.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\btc-to-satoshi.hpp">
@@ -482,6 +533,9 @@
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\ec-to-wif.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\ec-to-witness.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\ek-address.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
@@ -512,6 +566,24 @@
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-balance.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-block-hashes.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-block-height.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-block.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-filter-checkpoint.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-filter-headers.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-filter.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-header.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
@@ -524,9 +596,6 @@
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-public-key.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-stealth.hpp">
-      <Filter>include\bitcoin\explorer\commands</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-tx-index.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
@@ -534,6 +603,15 @@
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\fetch-utxo.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\get-filter-checkpoint.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\get-filter-headers.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\get-filters.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\hd-new.hpp">
@@ -569,6 +647,12 @@
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\input-validate.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\match-neutrino-address.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\match-neutrino-script.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\message-sign.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
@@ -585,6 +669,9 @@
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\mnemonic-to-seed.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\put-tx.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\qrcode.hpp">
@@ -605,13 +692,10 @@
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\script-to-address.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\script-to-key.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\seed.hpp">
-      <Filter>include\bitcoin\explorer\commands</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\send-tx-node.hpp">
-      <Filter>include\bitcoin\explorer\commands</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\send-tx-p2p.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\send-tx.hpp">
@@ -671,7 +755,13 @@
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\validate-tx.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\version.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\watch-address.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\watch-key.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\watch-stealth.hpp">
@@ -686,6 +776,9 @@
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\wif-to-public.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\witness-to-key.hpp">
+      <Filter>include\bitcoin\explorer\commands</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\commands\wrap-decode.hpp">
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
@@ -693,6 +786,9 @@
       <Filter>include\bitcoin\explorer\commands</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\config\address.hpp">
+      <Filter>include\bitcoin\explorer\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\bitcoin\explorer\config\address_format.hpp">
       <Filter>include\bitcoin\explorer\config</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\bitcoin\explorer\config\algorithm.hpp">

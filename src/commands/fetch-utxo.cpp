@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -30,9 +30,11 @@
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
-using namespace bc::chain;
+
 using namespace bc::client;
 using namespace bc::explorer::config;
+using namespace bc::system;
+using namespace bc::system::chain;
 
 console_result fetch_utxo::invoke(std::ostream& output, std::ostream& error)
 {
@@ -40,7 +42,7 @@ console_result fetch_utxo::invoke(std::ostream& output, std::ostream& error)
     const auto& encoding = get_format_option();
     const auto algorithm = get_algorithm_option();
     const auto satoshi = get_satoshi_argument();
-    const auto& address = get_payment_address_argument();
+    const hash_digest& key = get_hash_argument();
     const auto connection = get_connection(*this);
 
     obelisk_client client(connection.retries);
@@ -60,11 +62,10 @@ console_result fetch_utxo::invoke(std::ostream& output, std::ostream& error)
         if (!state.succeeded(ec))
             return;
 
-        state.output(bc::property_tree(unspent, json));
+        state.output(property_tree(unspent, json));
     };
 
-    client.blockchain_fetch_unspent_outputs(on_done, address, satoshi,
-        algorithm);
+    client.blockchain_fetch_unspent_outputs(on_done, key, satoshi, algorithm);
     client.wait();
 
     return state.get_result();

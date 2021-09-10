@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -20,7 +20,7 @@
 #include <bitcoin/explorer/commands/help.hpp>
 
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/display.hpp>
 #include <bitcoin/explorer/generated.hpp>
@@ -29,6 +29,8 @@
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
+
+using namespace bc::system;
 
 console_result help::invoke(std::ostream& output, std::ostream& error)
 {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -20,15 +20,17 @@
 
 #include <iostream>
 #include <cstdint>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/config/signature.hpp>
 #include <bitcoin/explorer/utility.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
+
 using namespace bc::explorer::config;
-using namespace bc::wallet;
+using namespace bc::system;
+using namespace bc::system::wallet;
 
 // This doesn't have to be WIF, but it incorporates the compression context.
 console_result message_sign::invoke(std::ostream& output, std::ostream& error)
@@ -38,7 +40,9 @@ console_result message_sign::invoke(std::ostream& output, std::ostream& error)
     const auto& message = get_message_argument();
 
     message_signature sign;
-    sign_message(sign, message, secret);
+
+    // This cannot fail because the secret has been validated.
+    /* bool */ sign_message(sign, message, secret);
 
     output << signature(sign) << std::endl;
     return console_result::okay;

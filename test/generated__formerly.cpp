@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -41,6 +41,11 @@ BOOST_AUTO_TEST_CASE(generated__formerly__address_embed_was_embed_addr__returns_
 BOOST_AUTO_TEST_CASE(generated__formerly__address_encode_was_encode_addr__returns_object)
 {
     BOOST_REQUIRE_EQUAL(formerly("encode-addr"), address_encode::symbol());
+}
+
+BOOST_AUTO_TEST_CASE(generated__formerly__broadcast_tx_was_sendtx_p2p__returns_object)
+{
+    BOOST_REQUIRE_EQUAL(formerly("sendtx-p2p"), broadcast_tx::symbol());
 }
 
 BOOST_AUTO_TEST_CASE(generated__formerly__btc_to_satoshi_was_satoshi__returns_object)
@@ -128,6 +133,11 @@ BOOST_AUTO_TEST_CASE(generated__formerly__mnemonic_encode_was_mnemonic__returns_
     BOOST_REQUIRE_EQUAL(formerly("mnemonic"), mnemonic_encode::symbol());
 }
 
+BOOST_AUTO_TEST_CASE(generated__formerly__put_tx_was_send_tx_node__returns_object)
+{
+    BOOST_REQUIRE_EQUAL(formerly("send-tx-node"), put_tx::symbol());
+}
+
 BOOST_AUTO_TEST_CASE(generated__formerly__ripemd160_was_ripemd_hash__returns_object)
 {
     BOOST_REQUIRE_EQUAL(formerly("ripemd-hash"), ripemd160::symbol());
@@ -158,16 +168,6 @@ BOOST_AUTO_TEST_CASE(generated__formerly__send_tx_was_sendtx_obelisk__returns_ob
     BOOST_REQUIRE_EQUAL(formerly("sendtx-obelisk"), send_tx::symbol());
 }
 
-BOOST_AUTO_TEST_CASE(generated__formerly__send_tx_node_was_sendtx_node__returns_object)
-{
-    BOOST_REQUIRE_EQUAL(formerly("sendtx-node"), send_tx_node::symbol());
-}
-
-BOOST_AUTO_TEST_CASE(generated__formerly__send_tx_p2p_was_sendtx_p2p__returns_object)
-{
-    BOOST_REQUIRE_EQUAL(formerly("sendtx-p2p"), send_tx_p2p::symbol());
-}
-
 BOOST_AUTO_TEST_CASE(generated__formerly__stealth_decode_was_stealth_show_addr__returns_object)
 {
     BOOST_REQUIRE_EQUAL(formerly("stealth-show-addr"), stealth_decode::symbol());
@@ -193,9 +193,9 @@ BOOST_AUTO_TEST_CASE(generated__formerly__validate_tx_was_validtx__returns_objec
     BOOST_REQUIRE_EQUAL(formerly("validtx"), validate_tx::symbol());
 }
 
-BOOST_AUTO_TEST_CASE(generated__formerly__watch_address_was_monitor__returns_object)
+BOOST_AUTO_TEST_CASE(generated__formerly__watch_key_was_monitor__returns_object)
 {
-    BOOST_REQUIRE_EQUAL(formerly("monitor"), watch_address::symbol());
+    BOOST_REQUIRE_EQUAL(formerly("monitor"), watch_key::symbol());
 }
 
 BOOST_AUTO_TEST_CASE(generated__formerly__watch_tx_was_watchtx__returns_object)

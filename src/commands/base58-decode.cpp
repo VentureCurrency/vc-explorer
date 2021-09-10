@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -19,15 +19,18 @@
 #include <bitcoin/explorer/commands/base58-decode.hpp>
 
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
-using namespace bc::config;
 
-console_result base58_decode::invoke(std::ostream& output, std::ostream& error)
+using namespace bc::system;
+using namespace bc::system::config;
+
+console_result base58_decode::invoke(std::ostream& output,
+    std::ostream& error)
 {
     // Bound parameters.
     const auto& base58 = get_base58_argument();

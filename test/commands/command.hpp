@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -32,6 +32,7 @@ using namespace bc::client; \
 using namespace bc::explorer; \
 using namespace bc::explorer::commands; \
 using namespace bc::explorer::config;
+using namespace bc::system;
 
 // Libbitcoin error messsages (see error.cpp).
 #define BX_ERROR_MESSAGE(ec) \
@@ -40,6 +41,8 @@ using namespace bc::explorer::config;
 // Genesis block hash, transaction, address.
 #define BX_FIRST_ADDRESS \
 "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+#define BX_FIRST_KEY \
+"6191c3b590bfcfa0475e877c302da1e323497acf3b42c08d8fa28e364edf018b"
 #define BX_GENESIS_BLOCK_HASH \
 "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"
 #define BX_SATOSHIS_WORDS_TX_HASH \
@@ -49,12 +52,15 @@ using namespace bc::explorer::config;
 
 #define BX_FIRST_TESTNET_ADDRESS \
 "n3GNqMveyvaPvUbH469vDRadqpJMPc84JA"
+#define BX_FIRST_TESTNET_KEY \
+"1abf6c34c4370673aee3ce1c1e6c16de549cc6baa065ff3e4b23414b1dc2eca7"
 
+// FIXME: v4 server(s) are required for network testing.
 // Default network parameters, uses libbitcoin community node.
 #define BX_MAINNET_HOST "mainnet.libbitcoin.net"
 #define BX_MAINNET_PORT 8333
-#define BX_TESTNET_HOST "testnet.libbitcoin.net"
-#define BX_TESTNET_PORT 18333
+#define BX_TESTNET_HOST "testnet2.libbitcoin.net"
+#define BX_TESTNET_PORT 28333
 #define BX_NETWORK_RETRY 0
 #define BX_NETWORK_TIMEOUT 5
 #define BX_NETWORK_HANDSHAKE 15
@@ -66,10 +72,10 @@ using namespace bc::explorer::config;
 #define BX_MAINNET_TRANSACTION "tcp://mainnet.libbitcoin.net:9094"
 
 // Libbitcoin Server (testnet), uses libbitcoin community server.
-#define BX_TESTNET_QUERY "tcp://testnet.libbitcoin.net:19091"
-#define BX_TESTNET_HEARTBEAT "tcp://mainnet.libbitcoin.net:19092"
-#define BX_TESTNET_BLOCK "tcp://mainnet.libbitcoin.net:19093"
-#define BX_TESTNET_TRANSACTION "tcp://mainnet.libbitcoin.net:19094"
+#define BX_TESTNET_QUERY "tcp://testnet2.libbitcoin.net:29091"
+#define BX_TESTNET_HEARTBEAT "tcp://testnet2.libbitcoin.net:29092"
+#define BX_TESTNET_BLOCK "tcp://testnet2.libbitcoin.net:29093"
+#define BX_TESTNET_TRANSACTION "tcp://testnet2.libbitcoin.net:29094"
 
 #define BX_DECLARE_COMMAND(extension) \
     std::stringstream output, error; \

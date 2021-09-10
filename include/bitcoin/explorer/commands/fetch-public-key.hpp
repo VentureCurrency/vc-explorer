@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -24,11 +24,12 @@
 #include <string>
 #include <vector>
 #include <boost/program_options.hpp>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/command.hpp>
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/generated.hpp>
 #include <bitcoin/explorer/config/address.hpp>
+#include <bitcoin/explorer/config/address_format.hpp>
 #include <bitcoin/explorer/config/algorithm.hpp>
 #include <bitcoin/explorer/config/btc.hpp>
 #include <bitcoin/explorer/config/byte.hpp>
@@ -82,6 +83,13 @@ public:
     }
 
     /**
+     * Destructor.
+     */
+    virtual ~fetch_public_key()
+    {
+    }
+
+    /**
      * The member symbolic (not localizable) command name, lower case.
      */
     virtual const char* name()
@@ -110,13 +118,13 @@ public:
      * A value of -1 indicates that the number of instances is unlimited.
      * @return  The loaded program argument definitions.
      */
-    virtual arguments_metadata& load_arguments()
+    virtual system::arguments_metadata& load_arguments()
     {
         return get_argument_metadata()
-            .add("PAYMENT_ADDRESS", 1);
+            .add("hash", 1);
     }
 
-	/**
+    /**
      * Load parameter fallbacks from file or input as appropriate.
      * @param[in]  input  The input stream for loading the parameters.
      * @param[in]         The loaded variables.
@@ -125,7 +133,7 @@ public:
         po::variables_map& variables)
     {
         const auto raw = requires_raw_input();
-        load_input(get_payment_address_argument(), "PAYMENT_ADDRESS", variables, input, raw);
+        load_input(get_hash_argument(), "hash", variables, input, raw);
     }
 
     /**
@@ -133,7 +141,7 @@ public:
      * BUGBUG: see boost bug/fix: svn.boost.org/trac/boost/ticket/8009
      * @return  The loaded program option definitions.
      */
-    virtual options_metadata& load_options()
+    virtual system::options_metadata& load_options()
     {
         using namespace po;
         options_description& options = get_option_metadata();
@@ -149,9 +157,9 @@ public:
             "The path to the configuration settings file."
         )
         (
-            "PAYMENT_ADDRESS",
-            value<bc::wallet::payment_address>(&argument_.payment_address),
-            "The payment address of the public key. If not specified the address is read from STDIN."
+            "hash",
+            value<system::config::hash256>(&argument_.hash),
+            "The Base16 payments search key of the public key. If not specified the key is read from STDIN."
         );
 
         return options;
@@ -171,26 +179,26 @@ public:
      * @param[out]  error   The input stream for the command execution.
      * @return              The appropriate console return code { -1, 0, 1 }.
      */
-    virtual console_result invoke(std::ostream& output,
+    virtual system::console_result invoke(std::ostream& output,
         std::ostream& cerr);
 
     /* Properties */
 
     /**
-     * Get the value of the PAYMENT_ADDRESS argument.
+     * Get the value of the hash argument.
      */
-    virtual bc::wallet::payment_address& get_payment_address_argument()
+    virtual system::config::hash256& get_hash_argument()
     {
-        return argument_.payment_address;
+        return argument_.hash;
     }
 
     /**
-     * Set the value of the PAYMENT_ADDRESS argument.
+     * Set the value of the hash argument.
      */
-    virtual void set_payment_address_argument(
-        const bc::wallet::payment_address& value)
+    virtual void set_hash_argument(
+        const system::config::hash256& value)
     {
-        argument_.payment_address = value;
+        argument_.hash = value;
     }
 
 private:
@@ -203,11 +211,11 @@ private:
     struct argument
     {
         argument()
-          : payment_address()
+          : hash()
         {
         }
 
-        bc::wallet::payment_address payment_address;
+        system::config::hash256 hash;
     } argument_;
 
     /**

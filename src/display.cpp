@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -31,7 +31,7 @@
 namespace libbitcoin {
 namespace explorer {
 
-using namespace bc::config;
+using namespace bc::system::config;
 
 #define BX_HOME_PAGE_URL "https://github.com/libbitcoin/libbitcoin-explorer"
 

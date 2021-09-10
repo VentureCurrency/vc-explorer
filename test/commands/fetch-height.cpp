@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -24,13 +24,13 @@ BX_USING_NAMESPACES()
 BOOST_AUTO_TEST_SUITE(network)
 BOOST_AUTO_TEST_SUITE(fetch_height__invoke)
 
-BOOST_AUTO_TEST_CASE(fetch_height__invoke__mainnet_wait_0__failure)
-{
-    BX_DECLARE_CLIENT_COMMAND(fetch_height);
-    command.set_server_connect_timeout_seconds_setting(0);
-    BX_REQUIRE_FAILURE(command.invoke(output, error));
-    BX_REQUIRE_ERROR(BX_ERROR_MESSAGE(channel_timeout) + "\n");
-}
+////BOOST_AUTO_TEST_CASE(fetch_height__invoke__mainnet_wait_0__failure)
+////{
+////    BX_DECLARE_CLIENT_COMMAND(fetch_height);
+////    command.set_server_connect_timeout_seconds_setting(0);
+////    BX_REQUIRE_FAILURE(command.invoke(output, error));
+////    BX_REQUIRE_ERROR(BX_ERROR_MESSAGE(channel_timeout) + "\n");
+////}
 
 BOOST_AUTO_TEST_CASE(fetch_height__invoke__mainnet__okay)
 {

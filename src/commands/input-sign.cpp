@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -20,13 +20,15 @@
 
 #include <iostream>
 #include <cstdint>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/utility.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
-using namespace bc::config;
+
+using namespace bc::system::config;
+using namespace bc::system;
 
 // The BX_INPUT_SIGN_FAILED condition uncovered by test.
 // This is because a vector to produce the failure is not known.

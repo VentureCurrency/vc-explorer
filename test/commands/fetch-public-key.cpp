@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(fetch_public_key__invoke__always__failure_error)
 {
     BX_DECLARE_COMMAND(fetch_public_key);
     BX_REQUIRE_FAILURE(command.invoke(output, error));
-    //BX_REQUIRE_ERROR(BX_FETCH_PUBLIC_KEY_NOT_IMPLEMENTED "\n");
+    BX_REQUIRE_ERROR(BX_FETCH_PUBLIC_KEY_NOT_IMPLEMENTED "\n");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -44,12 +44,6 @@ BOOST_AUTO_TEST_SUITE(fetch_utxo__invoke)
 "        index 0\n" \
 "        value 400000000\n" \
 "    }\n" \
-"    point\n" \
-"    {\n" \
-"        hash 4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b\n" \
-"        index 0\n" \
-"        value 5000000000\n" \
-"    }\n" \
 "}\n"
 
 #define FETCH_UTXO_GREEDY \
@@ -63,13 +57,16 @@ BOOST_AUTO_TEST_SUITE(fetch_utxo__invoke)
 "    }\n" \
 "}\n"
 
+// 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+const std::string PAYMENT_KEY = "6191c3b590bfcfa0475e877c302da1e323497acf3b42c08d8fa28e364edf018b";
+
 BOOST_AUTO_TEST_CASE(fetch_utxo__invoke__mainnet_individual_tx_info__okay_output)
 {
     BX_DECLARE_CLIENT_COMMAND(fetch_utxo);
     command.set_format_option({ "info" });
     command.set_algorithm_option({ "individual" });
     command.set_satoshi_argument(123400000);
-    command.set_payment_address_argument({ "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa" });
+    command.set_hash_argument({ PAYMENT_KEY });
     BX_REQUIRE_OKAY(command.invoke(output, error));
     BX_REQUIRE_OUTPUT(FETCH_UTXO_INDIVIDUAL);
 }
@@ -80,7 +77,7 @@ BOOST_AUTO_TEST_CASE(fetch_utxo__invoke__mainnet_greedy_tx_info__okay_output)
     command.set_format_option({ "info" });
     command.set_algorithm_option({ "greedy" });
     command.set_satoshi_argument(400000000);
-    command.set_payment_address_argument({ "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa" });
+    command.set_hash_argument({ PAYMENT_KEY });
     BX_REQUIRE_OKAY(command.invoke(output, error));
     BX_REQUIRE_OUTPUT(FETCH_UTXO_GREEDY);
 }

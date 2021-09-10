@@ -36,7 +36,7 @@ The master branch is a staging area for the next major release and should be use
 
 ### Autotools (advanced users)
 
-On Linux and macOS Libbitcoin Explorer is built using Autotools as follows and depends on [libbitcoin-client](https://github.com/libbitcoin/libbitcoin-client).
+On Linux and macOS Libbitcoin Explorer is built using Autotools as follows and depends on [libbitcoin-client](https://github.com/libbitcoin/libbitcoin-client) and [libbitcoin-network](https://github.com/libbitcoin/libbitcoin-network).
 
 ```sh
 $ ./autogen.sh
@@ -123,17 +123,6 @@ Finally install BX with recommended [build options](#build-notes-for-linux--maco
 $ ./install.sh --prefix=/home/me/myprefix --build-boost --build-zmq --disable-shared
 ```
 Bitcoin Explorer is now installed in `/home/me/myprefix` and can be invoked as `$ bx`.
-
-##### Installing from Formula
-
-Instead of building, Bitcoin Explorer can be installed from a formula:
-```sh
-$ brew install libbitcoin-explorer
-```
-or
-```sh
-$ brew install bx
-```
 
 #### Using MacPorts
 
@@ -236,11 +225,11 @@ $ ./install.sh --with-icu --with-png --with-qrencode --build-icu --build-zlib --
 
 ### Windows
 
-Visual Studio solutions are maintained for all libbitcoin libraries and dependencies. See the [libbitcoin](https://github.com/libbitcoin/libbitcoin/blob/master/README.md#windows) repository general information about building the Visual Studio solutions. To build Libbitcoin Explorer you must also download and build its **libbitcoin dependencies**, as these are not yet packaged.
+Visual Studio solutions are maintained for all libbitcoin libraries and dependencies. See the [libbitcoin-system](https://github.com/libbitcoin/libbitcoin-system/blob/master/README.md#windows) repository general information about building the Visual Studio solutions. To build Libbitcoin Explorer you must also download and build its **libbitcoin dependencies**, as these are not yet packaged.
 
 Build these solutions in order:
 
-1. [libbitcoin/libbitcoin](https://github.com/libbitcoin/libbitcoin)
+1. [libbitcoin/libbitcoin-system](https://github.com/libbitcoin/libbitcoin-system)
 2. [libbitcoin/libbitcoin-network](https://github.com/libbitcoin/libbitcoin-network)
 2. [libbitcoin/libbitcoin-protocol](https://github.com/libbitcoin/libbitcoin-protocol)
 3. [libbitcoin/libbitcoin-client](https://github.com/libbitcoin/libbitcoin-client)

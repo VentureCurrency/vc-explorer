@@ -4,12 +4,13 @@
 _bx()
 {
     local current="${COMP_WORDS[COMP_CWORD]}"
-    
+
     # Generated from XML data source.
     local commands="
         address-decode
         address-embed
         address-encode
+        address-to-key
         base16-decode
         base16-encode
         base58-decode
@@ -20,6 +21,7 @@ _bx()
         base64-encode
         bitcoin160
         bitcoin256
+        broadcast-tx
         btc-to-satoshi
         cert-new
         cert-public
@@ -33,6 +35,7 @@ _bx()
         ec-to-ek
         ec-to-public
         ec-to-wif
+        ec-to-witness
         ek-address
         ek-new
         ek-public
@@ -43,14 +46,22 @@ _bx()
         electrum-new
         electrum-to-seed
         fetch-balance
+        fetch-block
+        fetch-block-hashes
+        fetch-block-height
+        fetch-filter
+        fetch-filter-checkpoint
+        fetch-filter-headers
         fetch-header
         fetch-height
         fetch-history
         fetch-public-key
-        fetch-stealth
         fetch-tx
         fetch-tx-index
         fetch-utxo
+        get-filter-checkpoint
+        get-filter-headers
+        get-filters
         hd-new
         hd-private
         hd-public
@@ -60,20 +71,22 @@ _bx()
         input-set
         input-sign
         input-validate
+        match-neutrino-address
+        match-neutrino-script
         message-sign
         message-validate
         mnemonic-new
         mnemonic-to-seed
+        put-tx
         qrcode
         ripemd160
         satoshi-to-btc
         script-decode
         script-encode
         script-to-address
+        script-to-key
         seed
         send-tx
-        send-tx-node
-        send-tx-p2p
         settings
         sha160
         sha256
@@ -92,11 +105,12 @@ _bx()
         uri-decode
         uri-encode
         validate-tx
-        watch-address
-        watch-stealth
+        version
+        watch-key
         watch-tx
         wif-to-ec
         wif-to-public
+        witness-to-key
         wrap-decode
         wrap-encode
     "

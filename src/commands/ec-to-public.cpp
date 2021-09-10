@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -19,22 +19,25 @@
 #include <bitcoin/explorer/commands/ec-to-public.hpp>
 
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
-using namespace bc::wallet;
 
-// In the case of failure this produces ec_compressed_null.
+using namespace bc::system;
+using namespace bc::system::wallet;
+
 console_result ec_to_public::invoke(std::ostream& output, std::ostream& error)
 {
     const auto& secret = get_ec_private_key_argument();
     const auto& uncompressed = get_uncompressed_option();
 
     ec_compressed point;
-    secret_to_public(point, secret);
+
+    // It is not possible for the validated secret to fail conversion.
+    /* bool */ secret_to_public(point, secret);
 
     // Serialize to the original compression state.
     output << ec_public(point, !uncompressed) << std::endl;

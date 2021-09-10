@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -29,6 +29,7 @@ namespace libbitcoin {
 namespace explorer {
 namespace config {
 
+using namespace bc::system;
 using namespace po;
 
 //constexpr uint8_t cert_key_byte_size = 32;

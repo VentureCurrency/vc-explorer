@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -22,6 +22,7 @@
 
 using namespace bc;
 using namespace bc::explorer::config;
+using namespace bc::system;
 
 #define ADDRESS_MAINNET_A "15mKKb2eos1hWa6tisdPwwDC1a5J1y9nma"
 

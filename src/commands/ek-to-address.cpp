@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -20,13 +20,15 @@
 
 #include <cstdint>
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
-using namespace bc::wallet;
+
+using namespace bc::system;
+using namespace bc::system::wallet;
 
 console_result ek_to_address::invoke(std::ostream& output, std::ostream& error)
 {
@@ -44,7 +46,9 @@ console_result ek_to_address::invoke(std::ostream& output, std::ostream& error)
     }
 
     ec_compressed point;
-    secret_to_public(point, secret);
+
+    // It is not possible for the validated secret to fail conversion.
+    /* bool */ secret_to_public(point, secret);
     const payment_address address({ point, compressed }, version);
 
     output << address << std::endl;

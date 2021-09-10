@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -20,13 +20,15 @@
 
 #include <iostream>
 #include <string>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
-using namespace bc::wallet;
+
+using namespace bc::system;
+using namespace bc::system::wallet;
 
  console_result uri_encode::invoke(std::ostream& output, std::ostream& error)
  {
@@ -39,8 +41,9 @@ using namespace bc::wallet;
 
      bitcoin_uri uri;
 
+     // Address is already validated and cannot fail to reparse.
      if (!address.empty())
-         uri.set_address(address);
+         /* bool */ uri.set_address(address);
 
      if (amount > 0)
          uri.set_amount(amount);

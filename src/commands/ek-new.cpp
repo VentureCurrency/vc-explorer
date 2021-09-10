@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -20,13 +20,15 @@
 
 #include <algorithm>
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
-using namespace bc::wallet;
+
+using namespace bc::system;
+using namespace bc::system::wallet;
 
 console_result ek_new::invoke(std::ostream& output, std::ostream& error)
 {
@@ -46,7 +48,10 @@ console_result ek_new::invoke(std::ostream& output, std::ostream& error)
 
     ec_compressed unused;
     encrypted_private secret;
-    create_key_pair(secret, unused, token, bytes, version, !uncompressed);
+
+    // This cannot fail because the token has been validated.
+    /* bool */ create_key_pair(secret, unused, token, bytes, version,
+        !uncompressed);
 
     output << ek_private(secret) << std::endl;
     return console_result::okay;

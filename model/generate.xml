@@ -12,7 +12,6 @@
     <shorthand name="EK" description="Encrypted Key" />
     <shorthand name="HD" description="Hierarchical Deterministic" />
     <shorthand name="ICU" description="International Components for Unicode" />
-    <shorthand name="PNG" description="Portable Network Graphics" />
     <shorthand name="PREVOUT" description="Previous Output" />
     <shorthand name="PUBKEY" description="EC Public Key" />
     <shorthand name="QRCODE" description="Quick Response Code" />
@@ -21,6 +20,7 @@
     <shorthand name="SHA" description="Secure Hash Algorithm" />
     <shorthand name="SOCKS" description="Socket Secure (proxy protocol)" />
     <shorthand name="SX" description="Spesmilo Exchanger (the original version of Bitcoin Explorer)" />
+    <shorthand name="TIFF" description="Tagged Image File Format" />
     <shorthand name="TX" description="Transaction" />
     <shorthand name="UTXO" description="Unspent Transaction Output" />
     <shorthand name="WIF" description="Wallet Import Format" />
@@ -98,6 +98,10 @@
   <command symbol="address-encode" formerly="encode-addr" output="payment_address" category="WALLET" description="Convert a RIPEMD160 value to a payment address.">
     <option name="version" type="byte" configuration="wallet.pay_to_public_key_hash_version" description="The desired payment address version." />
     <argument name="RIPEMD160" stdin="true" type="hash160" description="The Base16 hash to convert. If not specified the value is read from STDIN."/>
+  </command>
+
+  <command symbol="address-to-key" output="base16" category="WALLET" description="Derive the payments search key of a payment address.">
+    <argument name="PAYMENT_ADDRESS" stdin="true" type="payment_address" description="The payment address. If not specified the address is read from STDIN." />
   </command>
 
   <command symbol="base16-decode" output="raw" category="ENCODING" description="Convert a Base16 value to binary data.">
@@ -211,19 +215,11 @@
     <argument name="EC_PRIVATE_KEY" stdin="true" type="ec_private" description="The Base16 EC private key to convert. If not specified the key is read from STDIN."/>
   </command>
 
-  <command symbol="electrum-new" output="string" multipleX="true" category="WALLET" description="Create a mnemonic seed (Electrum) from entropy. WARNING: mnemonic should be created from properly generated entropy.">
-    <option name="prefix" type="electrum" description="The electrum seed type identifier to use. Options are 'standard', 'witness', and 'dual' (for two factor authentication), defaults to 'standard'." />
-    <option name="language" type="language" description="The language identifier of the mnemonic dictionary to use. Options are 'en', 'es', 'pt', 'ja', 'zh_Hans' and 'any', defaults to 'en'." />
-    <argument name="SEED" stdin="true" type="base16" description="The Base16 entropy from which the mnemonic is created. If not specified the entropy is read from STDIN." />
-    <define name="BX_ELECTRUM_NEW_INVALID_SEED" value="The seed size is not supported." />
-    <define name="BX_ELECTRUM_REQUIRES_ICU" value="The command requires an ICU build." />
-  </command>
-
-  <command symbol="electrum-to-seed" output="base16" category="WALLET" description="Convert a mnemonic seed (Electrum) to its numeric representation.">
-    <option name="language" type="language" description="The language identifier of the dictionary of the mnemonic. Options are 'en', 'es', 'ja', 'pt', 'zh_Hans' and 'any', defaults to 'any'." />
-    <option name="passphrase" type="string" description="An optional passphrase for converting the mnemonic to a seed." />
-    <argument name="WORD" stdin="true" limit="-1" type="string" description="The set of words that that make up the mnemonic. If not specified the words are read from STDIN." />
-    <define name="BX_ELECTRUM_TO_SEED_REQUIRES_ICU" value="The passphrase option requires an ICU build." />
+  <command symbol="ec-to-witness" output="witness_address" category="WALLET" description="Convert an EC public key to a witness address.">
+    <option name="address_format" type="address_format" description="The desired Witness address format, defaults to p2wpkh." />
+    <argument name="prefix" required="true" type="string" description="The witness address prefix." />
+    <argument name="EC_PUBLIC_KEY" stdin="true" type="ec_public" description="The Base16 EC public key to convert. If not specified the key is read from STDIN." />
+    <define name="BX_EC_TO_WITNESS_PREFIX_NOT_SPECIFIED" value="The seed is less than 192 bits long." />
   </command>
 
   <command symbol="ek-address" output="payment_address" category="KEY_ENCRYPTION" description="Create a payment address derived from an intermediate passphrase token (BIP38).">
@@ -278,9 +274,95 @@
     <define name="BX_EK_TO_EC_REQUIRES_ICU" value="The command requires an ICU build." />
   </command>
 
+  <command symbol="electrum-new" output="string" multipleX="true" category="WALLET" description="Create a mnemonic seed (Electrum) from entropy. WARNING: mnemonic should be created from properly generated entropy.">
+    <option name="prefix" type="electrum" description="The electrum seed type identifier to use. Options are 'standard', 'witness', and 'dual' (for two factor authentication), defaults to 'standard'." />
+    <option name="language" type="language" description="The language identifier of the mnemonic dictionary to use. Options are 'en', 'es', 'pt', 'ja', 'zh_Hans' and 'any', defaults to 'en'." />
+    <argument name="SEED" stdin="true" type="base16" description="The Base16 entropy from which the mnemonic is created. If not specified the entropy is read from STDIN." />
+    <define name="BX_ELECTRUM_NEW_INVALID_SEED" value="The seed size is not supported." />
+    <define name="BX_ELECTRUM_REQUIRES_ICU" value="The command requires an ICU build." />
+  </command>
+
+  <command symbol="electrum-to-seed" output="base16" category="WALLET" description="Convert a mnemonic seed (Electrum) to its numeric representation.">
+     <option name="passphrase" type="string" description="An optional passphrase for converting the mnemonic to a seed." />
+    <argument name="WORD" stdin="true" limit="-1" type="string" description="The set of words that that make up the mnemonic. If not specified the words are read from STDIN." />
+    <define name="BX_ELECTRUM_TO_SEED_REQUIRES_ICU" value="The passphrase option requires an ICU build." />
+  </command>
+
   <command symbol="fetch-balance" output="balance_row" category="ONLINE" network="true" description="Get the balance in satoshi of a payment address. Requires a Libbitcoin server connection.">
     <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
-    <argument name="PAYMENT_ADDRESS" stdin="true" type="payment_address" description="The payment address. If not specified the address is read from STDIN." />
+    <argument name="hash" stdin="true" type="hash256" description="The Base16 payments search key. If not specified the key is read from STDIN."/>
+    <define name="BX_FETCH_BALANCE_INVALID_ARGUMENTS" value="A valid payments search key must be provided." />
+  </command>
+
+  <command symbol="fetch-block" category="ONLINE" output="block" network="true" description="Get the block from the specified hash or height. Height is ignored if both are specified. Requires a Libbitcoin server connection.">
+    <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
+    <option name="hash" shortcut="s" type="hash256" description="The Base16 block hash."/>
+    <option name="height" shortcut="t" type="uint32_t" description="The block height."/>
+  </command>
+
+  <command symbol="fetch-block-hashes" category="ONLINE" output="hash_list" network="true" description="Get the block from the specified hash or height. Height is ignored if both are specified. Requires a Libbitcoin server connection.">
+    <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
+    <option name="hash" shortcut="s" type="hash256" description="The Base16 block hash."/>
+    <option name="height" shortcut="t" type="uint32_t" description="The block height."/>
+  </command>
+
+  <command symbol="fetch-filter" category="ONLINE" output="compact_filter" network="true" description="Retrieve compact filters via a Libbitcoin server.">
+    <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
+    <!--<argument name="filter_type" shortcut="r" type="uint16_t" description="The compact filter type." />-->
+    <option name="hash" shortcut="s" type="hash256" description="The Base16 block hash."/>
+    <option name="height" shortcut="t" type="uint32_t" description="The block height."/>
+    <define name="BX_BIP157_UNSUPPORTED" value="The peer does not indicate support for BIP157." />
+    <!--<define name="BX_INVALID_FILTER_TYPE" value="The provided filter type exceeds encodable limits." />-->
+  </command>
+
+  <command symbol="fetch-filter-checkpoint" category="ONLINE" output="compact_filter_checkpoint" network="true" description="Retrieve compact filter checkpoint via a Libbitcoin server.">
+    <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
+    <!--<argument name="filter_type" shortcut="r" type="uint16_t" description="The compact filter type." />-->
+    <argument name="hash" type="hash256" stdin="true" description="The Base16 block hash. If not specified the hash is read from STDIN."/>
+    <define name="BX_BIP157_UNSUPPORTED" value="The peer does not indicate support for BIP157." />
+    <!--<define name="BX_INVALID_FILTER_TYPE" value="The provided filter type exceeds encodable limits." />-->
+  </command>
+
+  <command symbol="fetch-filter-headers" category="ONLINE" output="compact_filter_headers" network="true" description="Retrieve compact filter headers via a Libbitcoin server. The distance between provided height and hash must be strictly less than 2000.">
+    <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
+    <!--<argument name="filter_type" shortcut="r" type="uint16_t" description="The compact filter type." />-->
+    <argument name="start_height" type="uint32_t" description="The starting block height."/>
+    <option name="stop_hash" shortcut="s" type="hash256" description="The Base16 stop block hash."/>
+    <option name="stop_height" shortcut="t" type="uint32_t" description="The stop block height."/>
+    <define name="BX_BIP157_UNSUPPORTED" value="The peer does not indicate support for BIP157." />
+    <!--<define name="BX_INVALID_FILTER_TYPE" value="The provided filter type exceeds encodable limits." />-->
+  </command>
+
+  <command symbol="get-filters" category="ONLINE" output="compact_filter" network="true" description="Retrieve compact filters via a single Bitcoin network node. The distance between provided height and hash must be strictly less than 100.">
+    <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
+    <option name="host" shortcut="t" type="string" default="localhost" description="The IP address or DNS name of the node. Defaults to localhost." />
+    <option name="port" type="uint16_t" default="8333" description="The IP port of the Bitcoin service on the node. Defaults to 8333, the standard for mainnet." />
+    <!--<argument name="filter_type" shortcut="r" type="uint16_t" description="The compact filter type." />-->
+    <argument name="height" type="uint32_t" description="The block height."/>
+    <argument name="hash" type="hash256" stdin="true" description="The Base16 block hash. If not specified the hash is read from STDIN."/>
+    <define name="BX_BIP157_UNSUPPORTED" value="The peer does not indicate support for BIP157." />
+    <!--<define name="BX_INVALID_FILTER_TYPE" value="The provided filter type exceeds encodable limits." />-->
+  </command>
+
+  <command symbol="get-filter-checkpoint" category="ONLINE" output="compact_filter_checkpoint" network="true" description="Retrieve compact filter checkpoint via a single Bitcoin network node.">
+    <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
+    <option name="host" shortcut="t" type="string" default="localhost" description="The IP address or DNS name of the node. Defaults to localhost." />
+    <option name="port" type="uint16_t" default="8333" description="The IP port of the Bitcoin service on the node. Defaults to 8333, the standard for mainnet." />
+    <!--<argument name="filter_type" shortcut="r" type="uint16_t" description="The compact filter type." />-->
+    <argument name="hash" type="hash256" stdin="true" description="The Base16 block hash. If not specified the hash is read from STDIN."/>
+    <define name="BX_BIP157_UNSUPPORTED" value="The peer does not indicate support for BIP157." />
+    <!--<define name="BX_INVALID_FILTER_TYPE" value="The provided filter type exceeds encodable limits." />-->
+  </command>
+
+  <command symbol="get-filter-headers" category="ONLINE" output="compact_filter_headers" network="true" description="Retrieve compact filter headers via a single Bitcoin network node. The distance between provided height and hash must be strictly less than 2000.">
+    <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
+    <option name="host" shortcut="t" type="string" default="localhost" description="The IP address or DNS name of the node. Defaults to localhost." />
+    <option name="port" type="uint16_t" default="8333" description="The IP port of the Bitcoin service on the node. Defaults to 8333, the standard for mainnet." />
+    <!--<argument name="filter_type" shortcut="r" type="uint16_t" description="The compact filter type." />-->
+    <argument name="height" type="uint32_t" description="The block height."/>
+    <argument name="hash" type="hash256" stdin="true" description="The Base16 block hash. If not specified the hash is read from STDIN."/>
+    <define name="BX_BIP157_UNSUPPORTED" value="The peer does not indicate support for BIP157." />
+    <!--<define name="BX_INVALID_FILTER_TYPE" value="The provided filter type exceeds encodable limits." />-->
   </command>
 
   <command symbol="fetch-header" category="ONLINE" output="header" network="true" description="Get the block header from the specified hash or height. Height is ignored if both are specified. Requires a Libbitcoin server connection.">
@@ -289,29 +371,24 @@
     <option name="height" shortcut="t" type="uint32_t" description="The block height."/>
   </command>
 
+  <command symbol="fetch-block-height" category="ONLINE" output="uint32_t" network="true" description="Get the block height from the specified hash. Requires a Libbitcoin server connection.">
+    <argument name="hash" stdin="true" type="hash256" description="The Base16 block hash."/>
+  </command>
+
   <command symbol="fetch-height" formerly="fetch-last-height" output="uint32_t" category="ONLINE" network="true" description="Get the last block height. Requires a Libbitcoin server connection.">
     <argument name="server-url" description="The URL of the Libbitcoin server to use. If not specified the URL is obtained from configuration settings or defaults."/>
     <argument name="public-key" description="The public key of the Libbitcoin server. If not specified the key is obtained from configuration settings or defaults."/>
   </command>
 
-  <command symbol="fetch-history" output="history_row" category="ONLINE" network="true" description="Get list of output points, values, and spends for a payment address. Requires a Libbitcoin server connection.">
+  <command symbol="fetch-history" output="history_row" category="ONLINE" network="true" description="Get list of output points, values, and spends for a payment key. Requires a Libbitcoin server connection.">
     <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
-    <argument name="PAYMENT_ADDRESS" stdin="true" type="payment_address" description="The payment address. If not specified the address is read from STDIN." />
+    <argument name="hash" stdin="true" type="hash256" description="The Base16 payments search key. If not specified the key is read from STDIN."/>
+    <define name="BX_FETCH_HISTORY_INVALID_ARGUMENTS" value="A valid payments search key must be provided." />
   </command>
 
   <command symbol="fetch-public-key" formerly="get-pubkey" output="ec_public" category="ONLINE" stub="true" network="true" description="Get the EC public key of the address, if it exists on the blockchain. Requires a Libbitcoin server connection.">
-    <argument name="PAYMENT_ADDRESS" stdin="true" type="payment_address" description="The payment address of the public key. If not specified the address is read from STDIN."/>
+    <argument name="hash" stdin="true" type="hash256" description="The Base16 payments search key of the public key. If not specified the key is read from STDIN."/>
     <define name="BX_FETCH_PUBLIC_KEY_NOT_IMPLEMENTED" value="This command is not yet implemented." />
-  </command>
-
-  <command symbol="fetch-stealth" output="stealth_row" category="ONLINE" network="true" description="Get metadata on potential payment transactions by stealth prefix filter. Requires a Libbitcoin server connection.">
-    <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
-    <option name="height" shortcut="t" type="uint32_t" description="The minimum block height of transactions to include."/>
-    <!--<option name="scan_secret" type="ec_private" description="The Base16 EC private key to use locally in confirming stealth transactions."/>-->
-    <!--<option name="scan_pubkey" shortcut="p" type="ec_public" description="The Base16 EC public key to use locally in confirming stealth transactions."/>-->
-    <argument name="FILTER" type="base2" description="The Base2 stealth prefix filter used to locate transactions. Must be at least 8 bits in length." />
-    <define name="BX_FETCH_STEALTH_PREFIX_TOO_LONG" value="Stealth prefix is limited to 32 bits." />
-    <define name="BX_FETCH_STEALTH_FILTER_TOO_SHORT" value="Stealth prefix must be at least 8 bits." />
   </command>
 
   <command symbol="fetch-tx" formerly="fetch-transaction" output="transaction" category="ONLINE" network="true" description="Get a transaction by its hash. Requires a Libbitcoin server connection.">
@@ -329,7 +406,24 @@
     <option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />
     <option name="algorithm" type="algorithm" description="The algorithm for unspent output selection. Options are 'greedy' and 'individual', defaults to 'greedy'." />
     <argument name="SATOSHI" type="uint64_t" required="true" description="The whole number of satoshi." />
-    <argument name="PAYMENT_ADDRESS" stdin="true" type="payment_address" description="The payment address. If not specified the address is read from STDIN." />
+    <argument name="hash" stdin="true" type="hash256" description="The Base16 payments search key. If not specified the key is read from STDIN."/>
+    <define name="BX_FETCH_BALANCE_INVALID_ARGUMENTS" value="A valid payments search key must be provided." />
+  </command>
+
+  <command symbol="match-neutrino-address" output="bool" category="MATH" description="Determine whether the provided filter probabilistically matches the provided payment address.">
+    <argument name="COMPACT_FILTER" required="true" type="compact_filter" description="The neutrino filter to be evaluated." />
+    <argument name="ADDRESS" stdin="true" type="system::wallet::payment_address" description="The payment address whose membership is in question." />
+    <define name="BX_FILTER_TYPE_UNRECOGNIZED" value="The filter provided contains an unrecognized type." />
+    <define name="BX_FILTER_MATCH_ADDRESS_SUCCESS" value="Address matched filter." />
+    <define name="BX_FILTER_MATCH_ADDRESS_FAILURE" value="Address does not match filter." />
+  </command>
+
+  <command symbol="match-neutrino-script" output="bool" category="MATH" description="Determine whether the provided filter probabilistically matches the provided script.">
+    <argument name="COMPACT_FILTER" required="true" type="compact_filter" description="The neutrino filter to be evaluated." />
+    <argument name="SCRIPT" stdin="true" type="script" description="The script whose membership is in question." />
+    <define name="BX_FILTER_TYPE_UNRECOGNIZED" value="The filter provided contains an unrecognized type." />
+    <define name="BX_FILTER_MATCH_SCRIPT_SUCCESS" value="Script matched filter." />
+    <define name="BX_FILTER_MATCH_SCRIPT_FAILURE" value="Script does not match filter." />
   </command>
 
   <command symbol="hd-new" formerly="hd-seed" output="hd_private" category="WALLET" description="Create a new HD (BIP32) private key from entropy.">
@@ -430,31 +524,28 @@
   <command symbol="mnemonic-new" output="string" multipleX="true" category="WALLET" description="Create a mnemonic seed (BIP39) from entropy. WARNING: mnemonic should be created from properly generated entropy.">
     <option name="language" type="language" description="The language identifier of the mnemonic dictionary to use. Options are 'en', 'es', 'fr', 'it', 'ja', 'cs', 'ru', 'uk', 'zh_Hans', 'zh_Hant' and 'any', defaults to 'en'." />
     <argument name="SEED" stdin="true" type="base16" description="The Base16 entropy from which the mnemonic is created. The length must be evenly divisible by 32 bits. If not specified the entropy is read from STDIN." />
-    <define name="BX_EC_MNEMONIC_NEW_INVALID_SEED" value="The seed length in bytes is not evenly divisible by 32 bits." />
+    <define name="BX_MNEMONIC_NEW_INVALID_SEED" value="The seed length in bytes is not evenly divisible by 32 bits." />
   </command>
 
   <command symbol="mnemonic-to-seed" output="base16" category="WALLET" description="Convert a mnemonic seed (BIP39) to its numeric representation.">
     <option name="language" type="language" description="The language identifier of the dictionary of the mnemonic. Options are 'en', 'es', 'fr', 'it', 'ja', 'cs', 'ru', 'uk', 'zh_Hans', 'zh_Hant' and 'any', defaults to 'any'." />
     <option name="passphrase" type="string" description="An optional passphrase for converting the mnemonic to a seed." />
     <argument name="WORD" stdin="true" limit="-1" type="string" description="The set of words that that make up the mnemonic. If not specified the words are read from STDIN." />
-    <define name="BX_EC_MNEMONIC_TO_SEED_LENGTH_INVALID_SENTENCE" value="The number of words must be divisible by 3." />
-    <define name="BX_EC_MNEMONIC_TO_SEED_REQUIRES_ICU" value="The passphrase option requires an ICU build." />
-    <define name="BX_EC_MNEMONIC_TO_SEED_INVALID_IN_LANGUAGE" value="The specified words are not a valid mnemonic in the specified dictionary." />
-    <define name="BX_EC_MNEMONIC_TO_SEED_INVALID_IN_LANGUAGES" value="WARNING: The specified words are not a valid mnemonic in any supported dictionary." />
+    <define name="BX_MNEMONIC_TO_SEED_LENGTH_INVALID_SENTENCE" value="The number of words must be divisible by 3." />
+    <define name="BX_MNEMONIC_TO_SEED_REQUIRES_ICU" value="The passphrase option requires an ICU build." />
+    <define name="BX_MNEMONIC_TO_SEED_INVALID_IN_LANGUAGE" value="WARNING: The specified words are not a valid mnemonic in the specified dictionary." />
+    <define name="BX_MNEMONIC_TO_SEED_INVALID_IN_LANGUAGES" value="WARNING: The specified words are not a valid mnemonic in any supported dictionary." />
   </command>
 
-  <command symbol="qrcode" category="WALLET" output="raw" description="Create a QRCODE image file for a payment address.">
-    <option name="density" type="uint32_t" default="72" description="The pixels per inch of the QRCODE, defaults to 72." />
-    <option name="insensitive" description="Do not use case sensitivity." />
-    <option name="module_size" type="uint32_t" default="8" description="The module size in pixels of the QRCODE, defaults to 8." />
-    <option name="margin_size"  shortcut="r" type="uint32_t" default="2" description="The margin size in pixels of the QRCODE, defaults to 2." />
-    <option name="png" description="Write the QRCODE in PNG file format." />
+  <command symbol="qrcode" category="WALLET" output="raw" description="Create a square QRCODE TIFF file for a payment address.">
+    <option name="margin" type="uint16_t" default="2" description="The pixel width of the QRCODE margin, defaults to 2." />
+    <option name="pixels" type="uint16_t" default="8" description="The pixel width of the QRCODE modules, defaults to 8." />
     <option name="scheme" type="string" default="bitcoin" description="The URI scheme of the QRCODE data, defaults to bitcoin." />
-    <option name="version" type="uint32_t" description="The version of the QRCODE." />
+    <option name="version" type="uint16_t" description="The version of the QRCODE, defaults to 0 which is the minimum size." />
     <argument name="PAYMENT_ADDRESS" stdin="true" type="payment_address" required="true" description="The payment address. If not specified the address is read from STDIN."/>
-    <define name="BX_QRCODE_REQUIRES_QRENCODE" value="The command requires a QRENCODE build." />
-    <define name="BX_QRCODE_REQUIRES_PNG" value="The command requires a PNG build." />
-    <define name="BX_QRCODE_WRITE_ERROR" value="Error writing encoded data." />
+    <define name="BX_QRCODE_MINIMUM_SIZE" value="The pixel size of modules must be greater than 0. " />
+    <define name="BX_QRCODE_MAXIMUM_SIZE" value="The image is too large for uncompressed TIFF encoding." />
+    <define name="BX_QRCODE_MAXIMUM_VERSION" value="The version exceeds the maximum value of 40." />
   </command>
 
   <command symbol="ripemd160" formerly="ripemd-hash" output="base16" category="HASH" description="Perform a RIPEMD160 hash of Base16 data.">
@@ -479,6 +570,11 @@
     <argument name="SCRIPT" stdin="true" type="script" description="The script to use in the address. Multiple tokens must be quoted. If not specified the script is read from STDIN."/>
   </command>
 
+  <command symbol="script-to-key" output="base16" category="WALLET" description="Derive the payments search key of an output script.">
+    <option name="version" type="byte" configuration="wallet.pay_to_script_hash_version" description="The desired pay-to-script-hash address version, defaults to 5." />
+    <argument name="SCRIPT" stdin="true" type="script" description="The output script. Multiple tokens must be quoted. If not specified the script is read from STDIN."/>
+  </command>
+
   <command symbol="seed" output="base16" category="WALLET" description="Generate a pseudorandom seed.">
     <option name="bit_length" type="uint16_t" default="192" description="The length of the seed in bits. Must be divisible by 8 and must not be less than 128, defaults to 192." />
     <define name="BX_SEED_BIT_LENGTH_UNSUPPORTED" value="The seed size is not supported." />
@@ -489,14 +585,14 @@
     <define name="BX_SEND_TX_OUTPUT" value="Sent transaction." />
   </command>
 
-  <command symbol="send-tx-node" formerly="sendtx-node" output="string" category="ONLINE" network="true" description="Broadcast a transaction to the Bitcoin network via a single Bitcoin network node.">
+  <command symbol="put-tx" formerly="send-tx-node" output="string" category="ONLINE" network="true" description="Broadcast a transaction to the Bitcoin network via a single Bitcoin network node.">
     <option name="host" shortcut="t" type="string" default="localhost" description="The IP address or DNS name of the node. Defaults to localhost." />
     <option name="port" type="uint16_t" default="8333" description="The IP port of the Bitcoin service on the node. Defaults to 8333, the standard for mainnet." />
     <argument name="TRANSACTION" fileX="true" stdin="true" type="transaction" description="The Base16 transaction to send. If not specified the transaction is read from STDIN."/>
     <define name="BX_SEND_TX_NODE_OUTPUT" value="Sent transaction." />
   </command>
 
-  <command symbol="send-tx-p2p" formerly="sendtx-p2p" output="string" category="ONLINE" network="true" description="Broadcast a transaction to the Bitcoin network via the Bitcoin peer-to-peer network.">
+  <command symbol="broadcast-tx" formerly="sendtx-p2p" output="string" category="ONLINE" network="true" description="Broadcast a transaction to the Bitcoin network via the Bitcoin peer-to-peer network.">
     <option name="nodes" type="size_t" default="2" description="The number of network nodes to send the transaction to, defaults to 2." />
     <argument name="TRANSACTION" fileX="true" stdin="true" type="transaction" description="The Base16 transaction to send. If not specified the transaction is read from STDIN."/>
     <define name="BX_SEND_TX_P2P_OUTPUT" value="Sent transaction." />
@@ -619,22 +715,16 @@
     <define name="BX_VALIDATE_TX_INVALID" value="The transaction is invalid for the current state of the node: %1%." />
   </command>
 
-  <command symbol="watch-address" formerly="monitor" output="transaction" category="ONLINE" network="true" description="Watch the network for transactions in which an address participates. Requires a Libbitcoin server connection.">
-    <option name="duration" type="uint32_t" default="600" description="The duration of the watch in seconds, defaults to 600." />
-    <!--<option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />-->
-    <argument name="PAYMENT_ADDRESS" stdin="true" type="payment_address" description="The participating payment address. If not specified the address is read from STDIN." />
-    <define name="BX_WATCH_ADDRESS_WAITING" value="Watching address: %1%..." />
+  <command symbol="version" output="string" category="ONLINE" network="true" description="Fetch and display the libbitcoin server and client versions. Requires a Libbitcoin server connection.">
+    <define name="BX_VERSION_FAILED" value="Failed to retrieve server version: %1%." />
+    <define name="BX_SERVER_VERSION" value="libbitcoin-server version: %1%." />
+    <define name="BX_EXPLORER_VERSION" value="libbitcoin-explorer version: %1%." />
   </command>
 
-  <command symbol="watch-stealth" output="transaction" category="ONLINE" network="true" description="Watch the network for transactions by stealth prefix. Requires a Libbitcoin server connection.">
+  <command symbol="watch-key" formerly="monitor" output="transaction" category="ONLINE" network="true" description="Watch the network for transactions in which a payment key participates. Requires a Libbitcoin server connection.">
     <option name="duration" type="uint32_t" default="600" description="The duration of the watch in seconds, defaults to 600." />
-    <!--<option name="format" type="encoding" description="The output format. Options are 'info', 'json' and 'xml', defaults to 'info'." />-->
-	<!--<option name="scan_secret" type="ec_private" description="The Base16 EC private key to use locally in confirming stealth transactions."/>-->
-	<!--<option name="scan_pubkey" shortcut="p" type="ec_public" description="The Base16 EC public key to use locally in confirming stealth transactions."/>-->
-    <argument name="PREFIX" stdin="true" type="base2" description="The Base2 stealth prefix to watch. Must be at least 8 bits in length. If not specified the prefix is read from STDIN." />
-    <define name="BX_WATCH_STEALTH_PREFIX_WAITING" value="Watching stealth prefix: %1%..." />
-    <define name="BX_WATCH_STEALTH_PREFIX_TOO_LONG" value="Stealth prefix is limited to 32 bits." />
-    <define name="BX_WATCH_STEALTH_PREFIX_TOO_SHORT" value="Stealth prefix must be at least 8 bits." />
+    <argument name="hash" stdin="true" type="hash256" description="The Base16 payments search key. If not specified the address is read from STDIN."/>
+    <define name="BX_WATCH_KEY_WAITING" value="Watching key: %1%..." />
   </command>
 
   <command symbol="watch-tx" formerly="watchtx" output="transaction" category="ONLINE" network="true" stub="true" description="Watch the network for a transaction by hash. Requires a Libbitcoin server connection.">
@@ -650,6 +740,10 @@
 
   <command symbol="wif-to-public" output="ec_public" category="WALLET" description="Derive the EC public key from a WIF private key.">
     <argument name="WIF" stdin="true" type="wif" description="The WIF private key. If not specified the value is read from STDIN."/>
+  </command>
+
+  <command symbol="witness-to-key" output="base16" category="WALLET" description="Derive the payments search key of a witness address.">
+    <argument name="WITNESS_ADDRESS" stdin="true" type="witness_address" description="The witness address. If not specified the address is read from STDIN." />
   </command>
 
   <command symbol="wrap-decode" formerly="unwrap" output="wrapper" category="ENCODING" description="Validate the checksum of checked Base16 data and recover its version and payload.">

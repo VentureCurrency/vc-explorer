@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -19,7 +19,7 @@
 #include <bitcoin/explorer/commands/stealth-decode.hpp>
 
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/prop_tree.hpp>
 #include <bitcoin/explorer/utility.hpp>
@@ -27,7 +27,9 @@
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
+
 using namespace bc::explorer::config;
+using namespace bc::system;
 
 console_result stealth_decode::invoke(std::ostream& output,
     std::ostream& error)
@@ -39,7 +41,7 @@ console_result stealth_decode::invoke(std::ostream& output,
     // This enables json-style array formatting.
     const auto json = encoding == encoding_engine::json;
 
-    write_stream(output, prop_tree(address, json), encoding);
+    write_stream(output, property_tree(address, json), encoding);
     return console_result::okay;
 }
 

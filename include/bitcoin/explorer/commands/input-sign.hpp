@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -24,11 +24,12 @@
 #include <string>
 #include <vector>
 #include <boost/program_options.hpp>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/command.hpp>
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/generated.hpp>
 #include <bitcoin/explorer/config/address.hpp>
+#include <bitcoin/explorer/config/address_format.hpp>
 #include <bitcoin/explorer/config/algorithm.hpp>
 #include <bitcoin/explorer/config/btc.hpp>
 #include <bitcoin/explorer/config/byte.hpp>
@@ -84,6 +85,13 @@ public:
     }
 
     /**
+     * Destructor.
+     */
+    virtual ~input_sign()
+    {
+    }
+
+    /**
      * The member symbolic (not localizable) command name, lower case.
      */
     virtual const char* name()
@@ -112,7 +120,7 @@ public:
      * A value of -1 indicates that the number of instances is unlimited.
      * @return  The loaded program argument definitions.
      */
-    virtual arguments_metadata& load_arguments()
+    virtual system::arguments_metadata& load_arguments()
     {
         return get_argument_metadata()
             .add("EC_PRIVATE_KEY", 1)
@@ -120,7 +128,7 @@ public:
             .add("TRANSACTION", 1);
     }
 
-	/**
+    /**
      * Load parameter fallbacks from file or input as appropriate.
      * @param[in]  input  The input stream for loading the parameters.
      * @param[in]         The loaded variables.
@@ -137,7 +145,7 @@ public:
      * BUGBUG: see boost bug/fix: svn.boost.org/trac/boost/ticket/8009
      * @return  The loaded program option definitions.
      */
-    virtual options_metadata& load_options()
+    virtual system::options_metadata& load_options()
     {
         using namespace po;
         options_description& options = get_option_metadata();
@@ -174,12 +182,12 @@ public:
         )
         (
             "CONTRACT",
-            value<bc::config::script>(&argument_.contract)->required(),
+            value<system::config::script>(&argument_.contract)->required(),
             "The previous output script to use in signing. Multiple tokens must be quoted."
         )
         (
             "TRANSACTION",
-            value<bc::config::transaction>(&argument_.transaction),
+            value<system::config::transaction>(&argument_.transaction),
             "The Base16 transaction. If not specified the transaction is read from STDIN."
         );
 
@@ -200,7 +208,7 @@ public:
      * @param[out]  error   The input stream for the command execution.
      * @return              The appropriate console return code { -1, 0, 1 }.
      */
-    virtual console_result invoke(std::ostream& output,
+    virtual system::console_result invoke(std::ostream& output,
         std::ostream& cerr);
 
     /* Properties */
@@ -225,7 +233,7 @@ public:
     /**
      * Get the value of the CONTRACT argument.
      */
-    virtual bc::config::script& get_contract_argument()
+    virtual system::config::script& get_contract_argument()
     {
         return argument_.contract;
     }
@@ -234,7 +242,7 @@ public:
      * Set the value of the CONTRACT argument.
      */
     virtual void set_contract_argument(
-        const bc::config::script& value)
+        const system::config::script& value)
     {
         argument_.contract = value;
     }
@@ -242,7 +250,7 @@ public:
     /**
      * Get the value of the TRANSACTION argument.
      */
-    virtual bc::config::transaction& get_transaction_argument()
+    virtual system::config::transaction& get_transaction_argument()
     {
         return argument_.transaction;
     }
@@ -251,7 +259,7 @@ public:
      * Set the value of the TRANSACTION argument.
      */
     virtual void set_transaction_argument(
-        const bc::config::transaction& value)
+        const system::config::transaction& value)
     {
         argument_.transaction = value;
     }
@@ -324,8 +332,8 @@ private:
         }
 
         explorer::config::ec_private ec_private_key;
-        bc::config::script contract;
-        bc::config::transaction transaction;
+        system::config::script contract;
+        system::config::transaction transaction;
     } argument_;
 
     /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -24,17 +24,18 @@
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 #include <bitcoin/explorer/command.hpp>
-#include <bitcoin/explorer/commands/send-tx-node.hpp>
-#include <bitcoin/explorer/commands/send-tx-p2p.hpp>
+#include <bitcoin/explorer/commands/broadcast-tx.hpp>
+#include <bitcoin/explorer/commands/put-tx.hpp>
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/display.hpp>
 #include <bitcoin/explorer/generated.hpp>
 #include <bitcoin/explorer/parser.hpp>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 
+using namespace bc::system;
 using namespace boost;
 using namespace boost::filesystem;
 using namespace boost::program_options;
@@ -48,11 +49,11 @@ static std::istream& get_command_input(command& command, std::istream& input)
 #ifdef _MSC_VER
     if (command.requires_raw_input())
     {
-        bc::set_binary_stdin();
+        set_binary_stdin();
         return std::cin;
     }
 
-    bc::set_utf8_stdin();
+    set_utf8_stdin();
 #endif
 
     return input;
@@ -64,11 +65,11 @@ static std::ostream& get_command_output(command& command, std::ostream& output)
 #ifdef _MSC_VER
     if (command.requires_raw_output())
     {
-        bc::set_binary_stdout();
+        set_binary_stdout();
         return std::cout;
     }
 
-    bc::set_utf8_stdout();
+    set_utf8_stdout();
 #endif
 
     return output;
@@ -77,7 +78,7 @@ static std::ostream& get_command_output(command& command, std::ostream& output)
 // Set Unicode error stream in Windows builds.
 static std::ostream& get_command_error(command& command, std::ostream& error)
 {
-    bc::set_utf8_stderr();
+    set_utf8_stderr();
     return error;
 }
 
@@ -126,14 +127,14 @@ console_result dispatch_command(int argc, const char* argv[],
     }
 
     // TODO: move log determination into generated command static.
-    if ((target == commands::send_tx_node::symbol()) ||
-        (target == commands::send_tx_p2p::symbol()))
+    if ((target == commands::put_tx::symbol()) ||
+        (target == commands::broadcast_tx::symbol()))
     {
         auto debug_file = command->get_network_debug_file_setting().string();
         auto error_file = command->get_network_error_file_setting().string();
 
-        auto debug_log = boost::make_shared<bc::ofstream>(debug_file, mode);
-        auto error_log = boost::make_shared<bc::ofstream>(error_file, mode);
+        auto debug_log = boost::make_shared<ofstream>(debug_file, mode);
+        auto error_log = boost::make_shared<ofstream>(error_file, mode);
 
         log::stream console_out(&output, null_deleter());
         log::stream console_err(&error, null_deleter());

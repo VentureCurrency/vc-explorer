@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -22,7 +22,7 @@
 #include <string>
 #include <cstdint>
 #include <boost/program_options.hpp>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/utility.hpp>
 
@@ -66,7 +66,7 @@ std::istream& operator>>(std::istream& input, byte& argument)
     // treat 8 bit values as decimal numbers (unlike 16+ bit numbers).
 
     uint16_t number;
-    bc::deserialize(number, decimal, true);
+    system::deserialize(number, decimal, true);
 
     if (number > max_uint8)
     {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -20,7 +20,7 @@
 #define BX_DISPLAY_HPP
 
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/command.hpp>
 
@@ -39,7 +39,7 @@ BCX_API void display_command_names(std::ostream& stream);
  * @param[in]  url     The server url.
  */
 BCX_API void display_connection_failure(std::ostream& stream,
-    const bc::config::endpoint& url);
+    const system::config::endpoint& url);
 
 /**
  * Write an error message to a stream that the specified explorer command

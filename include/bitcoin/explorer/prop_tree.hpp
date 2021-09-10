@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -23,9 +23,8 @@
 #include <string>
 #include <vector>
 #include <boost/property_tree/ptree.hpp>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
-#include <bitcoin/explorer/config/wrapper.hpp>
 
 namespace libbitcoin {
 namespace explorer {
@@ -36,7 +35,6 @@ class header;
 class input;
 class output;
 class transaction;
-class wrapper;
 
 /**
  * A tuple to represent settings and serialized values.
@@ -129,11 +127,31 @@ BCX_API pt::ptree prop_tree(const client::history::list& rows, bool json);
  * Generate a property list from balance rows for an address.
  * This doesn't require array formatting because it summarizes the rows.
  * @param[in]  rows             The set of balance rows.
+ * @param[in]  balance_address  The script hash for the balance rows.
+ * @return                      A property list.
+ */
+BCX_API pt::ptree prop_list(const client::history::list& rows,
+    const system::hash_digest& script_hash);
+
+/**
+ * Generate a property tree from balance rows for an address.
+ * This doesn't require array formatting because it summarizes the rows.
+ * @param[in]  rows             The set of balance rows.
+ * @param[in]  balance_address  The script hash for the balance rows.
+ * @return                      A property tree.
+ */
+BCX_API pt::ptree prop_tree(const client::history::list& rows,
+    const system::hash_digest& script_hash);
+
+/**
+ * Generate a property list from balance rows for an address.
+ * This doesn't require array formatting because it summarizes the rows.
+ * @param[in]  rows             The set of balance rows.
  * @param[in]  balance_address  The payment address for the balance rows.
  * @return                      A property list.
  */
 BCX_API pt::ptree prop_list(const client::history::list& rows,
-    const wallet::payment_address& balance_address);
+    const system::wallet::payment_address& balance_address);
 
 /**
  * Generate a property tree from balance rows for an address.
@@ -143,7 +161,7 @@ BCX_API pt::ptree prop_list(const client::history::list& rows,
  * @return                      A property tree.
  */
 BCX_API pt::ptree prop_tree(const client::history::list& rows,
-    const wallet::payment_address& balance_address);
+    const system::wallet::payment_address& balance_address);
 
 /**
  * Generate a property list for a transaction input.
@@ -218,7 +236,7 @@ BCX_API pt::ptree prop_tree(const tx_output_type::list& tx_outputs,
  * @param[in]  point  The point value.
  * @return            A property list.
  */
-BCX_API pt::ptree prop_list(const chain::point_value& point);
+BCX_API pt::ptree prop_list(const system::chain::point_value& point);
 
 /**
  * Generate a property tree for points value.
@@ -226,7 +244,8 @@ BCX_API pt::ptree prop_list(const chain::point_value& point);
  * @param[in]  json  Use json array formatting.
  * @return           A property tree.
  */
-BCX_API pt::ptree prop_tree(const chain::points_value& values, bool json);
+BCX_API pt::ptree prop_tree(const system::chain::points_value& values,
+    bool json);
 
 /**
  * Generate a property list for a transaction.
@@ -254,90 +273,11 @@ BCX_API pt::ptree prop_tree(const std::vector<transaction>& transactions,
     bool json);
 
 /**
- * Generate a property list for a wrapper.
- * @param[in]  wrapper  The wrapper instance.
- * @return              A property list.
- */
-BCX_API pt::ptree prop_list(const wallet::wrapped_data& wrapper);
-
-/**
- * Generate a property tree for a wrapper.
- * @param[in]  wrapper  The wrapper instance.
- * @return              A property tree.
- */
-BCX_API pt::ptree prop_tree(const wallet::wrapped_data& wrapper);
-
-/**
- * Generate a property list for a stealth address.
- * @param[in]  stealth_address  The stealth address.
- * @param[in]  json             Use json array formatting.
- * @return                      A property list.
- */
-BCX_API pt::ptree prop_list(const wallet::stealth_address& stealth, bool json);
-
-/**
- * Generate a property tree for a stealth address.
- * @param[in]  stealth_address  The stealth address.
- * @param[in]  json             Use json array formatting.
- * @return                      A property tree.
- */
-BCX_API pt::ptree prop_tree(const wallet::stealth_address& stealth, bool json);
-
-/**
- * Generate a property list for a stealth metadata row.
- * @param[in]  rows  The stealth row.
- * @return           A property list.
- */
-BCX_API pt::ptree prop_list(const client::stealth& row);
-
-/**
- * Generate a property tree for a stealth metadata row.
- * @param[in]  rows  The stealth row.
- * @return           A property tree.
- */
-BCX_API pt::ptree prop_tree(const client::stealth& row);
-
-/**
- * Generate a property tree from stealth metadata rows.
- * @param[in]  rows    The set of stealth rows.
- * @param[in]  json    Use json array formatting.
- * @return             A property tree.
- */
-BCX_API pt::ptree prop_tree(const client::stealth::list& rows, bool json);
-
-/**
- * Create a property list for the fetch-tx-index command.
- * @param[in]  hash    The block hash.
- * @param[in]  height  The block height.
- * @param[in]  index   The tx index.
- * @returns            A new property list containing the list.
- */
-BCX_API pt::ptree prop_list(const bc::hash_digest& hash, size_t height,
-    size_t index);
-
-/**
- * Create a property tree for the fetch-tx-index command.
- * @param[in]  hash    The block hash.
- * @param[in]  height  The block height.
- * @param[in]  index   The tx index.
- * @returns            A new property tree containing the list.
- */
-BCX_API pt::ptree prop_tree(const bc::hash_digest& hash, size_t height,
-    size_t index);
-
-/**
  * Create a property tree for the settings command.
  * @param[in]  settings   The list of settings.
  * @returns               A new property tree containing the settings.
  */
 BCX_API pt::ptree prop_tree(const settings_list& settings);
-
-/**
- * Create a property tree for a parsed bitcoin uri.
- * @param[in]  uri   The parsed uri.
- * @returns          A new property tree containing the settings.
- */
-BCX_API pt::ptree prop_tree(const wallet::bitcoin_uri& uri);
 
 } // namespace config
 } // namespace explorer

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -27,8 +27,8 @@ BOOST_AUTO_TEST_SUITE(fetch_history__invoke)
 // These amounts may change at any time, making these particular tests fragile.
 
 // Vector: github.com/spesmilo/sx/blob/master/README.md
-#define BX_FETCH_HISTORY_SX_DEMO1_ADDRESS "134HfD2fdeBTohfx8YANxEpsYXsv5UoWyz"
-#define BX_FETCH_HISTORY_SX_DEMO1_INFO \
+#define BX_FETCH_HISTORY_DEMO1_KEY "a0e0be1350a3d3eaa3f381e3aa78f64d16e712c1bfffc7d7ca3b9b5f7409adf8" // 134HfD2fdeBTohfx8YANxEpsYXsv5UoWyz
+#define BX_FETCH_HISTORY_DEMO1_INFO \
 "transfers\n" \
 "{\n" \
 "    transfer\n" \
@@ -50,8 +50,8 @@ BOOST_AUTO_TEST_SUITE(fetch_history__invoke)
 "}\n"
 
 // Vector: github.com/spesmilo/sx/blob/master/README.md
-#define BX_FETCH_HISTORY_SX_DEMO2_ADDRESS "13Ft7SkreJY9D823NPm4t6D1cBqLYTJtAe"
-#define BX_FETCH_HISTORY_SX_DEMO2_INFO \
+#define BX_FETCH_HISTORY_DEMO2_KEY "0550bf9055a9a10e453f7ee6cf584ab61307f64a62aa0b3dba11068cf4ac7efe" // 13Ft7SkreJY9D823NPm4t6D1cBqLYTJtAe
+#define BX_FETCH_HISTORY_DEMO2_INFO \
 "transfers\n" \
 "{\n" \
 "    transfer\n" \
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_SUITE(fetch_history__invoke)
 "    }\n" \
 "}\n"
 
-#define BX_FETCH_HISTORY_TESTNET_DEMO_ADDRESS "n3GNqMveyvaPvUbH469vDRadqpJMPc84JA"
+#define BX_FETCH_HISTORY_TESTNET_DEMO_KEY "1abf6c34c4370673aee3ce1c1e6c16de549cc6baa065ff3e4b23414b1dc2eca7" // n3GNqMveyvaPvUbH469vDRadqpJMPc84JA
 #define BX_FETCH_HISTORY_TESTNET_DEMO_INFO \
 "transfers\n" \
 "{\n" \
@@ -120,46 +120,30 @@ BOOST_AUTO_TEST_SUITE(fetch_history__invoke)
 "        }\n" \
 "        value 50000\n" \
 "    }\n" \
-"    transfer\n" \
-"    {\n" \
-"        received\n" \
-"        {\n" \
-"            hash f0315ffc38709d70ad5647e22048358dd3745f3ce3874223c80a7c92fab0c8ba\n" \
-"            height 1\n" \
-"            index 0\n" \
-"        }\n" \
-"        spent\n" \
-"        {\n" \
-"            hash 5f2052ac5cb8eed1995a087b8f4777b27345acf97a193ef8af536ed5dd4935ce\n" \
-"            height 16294\n" \
-"            index 0\n" \
-"        }\n" \
-"        value 5000000000\n" \
-"    }\n" \
 "}\n"
 
 BOOST_AUTO_TEST_CASE(fetch_history__invoke__mainnet_sx_demo1_info__okay_output)
 {
     BX_DECLARE_CLIENT_COMMAND(bc::explorer::commands::fetch_history);
-    command.set_payment_address_argument({ BX_FETCH_HISTORY_SX_DEMO1_ADDRESS });
+    command.set_hash_argument({ BX_FETCH_HISTORY_DEMO1_KEY });
     BX_REQUIRE_OKAY(command.invoke(output, error));
-    BX_REQUIRE_OUTPUT(BX_FETCH_HISTORY_SX_DEMO1_INFO);
+    BX_REQUIRE_OUTPUT(BX_FETCH_HISTORY_DEMO1_INFO);
 }
 
 BOOST_AUTO_TEST_CASE(fetch_history__invoke__mainnet_sx_demo2_info__okay_output)
 {
     BX_DECLARE_CLIENT_COMMAND(bc::explorer::commands::fetch_history);
     command.set_format_option({ "info" });
-    command.set_payment_address_argument({ BX_FETCH_HISTORY_SX_DEMO2_ADDRESS });
+    command.set_hash_argument({ BX_FETCH_HISTORY_DEMO2_KEY });
     BX_REQUIRE_OKAY(command.invoke(output, error));
-    BX_REQUIRE_OUTPUT(BX_FETCH_HISTORY_SX_DEMO2_INFO);
+    BX_REQUIRE_OUTPUT(BX_FETCH_HISTORY_DEMO2_INFO);
 }
 
 BOOST_AUTO_TEST_CASE(fetch_history__invoke__testnet_demo_info__okay_output)
 {
     BX_DECLARE_CLIENT_TESTNET_COMMAND(bc::explorer::commands::fetch_history);
     command.set_format_option({ "info" });
-    command.set_payment_address_argument({ BX_FETCH_HISTORY_TESTNET_DEMO_ADDRESS });
+    command.set_hash_argument({ BX_FETCH_HISTORY_TESTNET_DEMO_KEY });
     BX_REQUIRE_OKAY(command.invoke(output, error));
     BX_REQUIRE_OUTPUT(BX_FETCH_HISTORY_TESTNET_DEMO_INFO);
 }

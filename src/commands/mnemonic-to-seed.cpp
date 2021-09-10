@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -19,14 +19,16 @@
 #include <bitcoin/explorer/commands/mnemonic-to-seed.hpp>
 
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
-using namespace bc::config;
-using namespace bc::wallet;
+
+using namespace bc::system;
+using namespace bc::system::config;
+using namespace bc::system::wallet;
 
 console_result mnemonic_to_seed::invoke(std::ostream& output,
     std::ostream& error)
@@ -38,9 +40,9 @@ console_result mnemonic_to_seed::invoke(std::ostream& output,
 
     const auto word_count = words.size();
 
-    if ((word_count % bc::wallet::mnemonic_word_multiple) != 0)
+    if ((word_count % wallet::mnemonic_word_multiple) != 0)
     {
-        error << BX_EC_MNEMONIC_TO_SEED_LENGTH_INVALID_SENTENCE << std::endl;
+        error << BX_MNEMONIC_TO_SEED_LENGTH_INVALID_SENTENCE << std::endl;
         return console_result::failure;
     }
 
@@ -49,12 +51,12 @@ console_result mnemonic_to_seed::invoke(std::ostream& output,
     if (!valid && language.size() == 1)
     {
         // This is fatal because a dictionary was specified explicitly.
-        error << BX_EC_MNEMONIC_TO_SEED_INVALID_IN_LANGUAGE << std::endl;
+        error << BX_MNEMONIC_TO_SEED_INVALID_IN_LANGUAGE << std::endl;
         return console_result::failure;
     }
 
     if (!valid && language.size() > 1)
-        error << BX_EC_MNEMONIC_TO_SEED_INVALID_IN_LANGUAGES << std::endl;
+        error << BX_MNEMONIC_TO_SEED_INVALID_IN_LANGUAGES << std::endl;
 
 #ifdef WITH_ICU
     // Any word set divisible by 3 works regardless of language validation.
@@ -62,11 +64,11 @@ console_result mnemonic_to_seed::invoke(std::ostream& output,
 #else
     if (!passphrase.empty())
     {
-        error << BX_EC_MNEMONIC_TO_SEED_REQUIRES_ICU << std::endl;
+        error << BX_MNEMONIC_TO_SEED_REQUIRES_ICU << std::endl;
         return console_result::failure;
     }
 
-    // The passphrase requires ICU normalization.
+    // Decoding with passphrase requires ICU normalization.
     const auto seed = decode_mnemonic(words);
 #endif
 

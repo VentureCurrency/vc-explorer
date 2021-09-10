@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -19,38 +19,38 @@
 #include <bitcoin/explorer/commands/electrum-to-seed.hpp>
 
 #include <iostream>
-#include <bitcoin/bitcoin.hpp>
+#include <bitcoin/system.hpp>
 #include <bitcoin/explorer/define.hpp>
 
 namespace libbitcoin {
 namespace explorer {
 namespace commands {
-using namespace bc::config;
-using namespace bc::wallet;
+
+using namespace bc::system;
+using namespace bc::system::config;
+using namespace bc::system::wallet;
 
 console_result electrum_to_seed::invoke(std::ostream& output,
     std::ostream& error)
 {
+#ifdef WITH_ICU
     // Bound parameters.
-    const dictionary_list& language = get_language_option();
     const auto& passphrase = get_passphrase_option();
     const auto& words = get_words_argument();
 
-#ifdef WITH_ICU
-    const auto seed = electrum::decode_mnemonic(words, passphrase);
-#else
-    // The passphrase requires ICU normalization.
-    if (!passphrase.empty())
-    {
-        error << BX_ELECTRUM_TO_SEED_REQUIRES_ICU << std::endl;
-        return console_result::failure;
-    }
+    // Decoding requires ICU normalization.
+    if (passphrase.empty())
+        output << base16(electrum::decode_mnemonic(words)) << std::endl;
+    else
+        output << base16(electrum::decode_mnemonic(words, passphrase))
+            << std::endl;
 
-    const auto seed = electrum::decode_mnemonic(words);
+    return console_result::okay;
+#else
+    error << BX_ELECTRUM_REQUIRES_ICU << std::endl;
+    return console_result::failure;
 #endif
 
-    output << base16(seed) << std::endl;
-    return console_result::okay;
 }
 
 } //namespace commands

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2019 libbitcoin developers (see AUTHORS)
  *
  * This file is part of libbitcoin.
  *
@@ -33,9 +33,10 @@ namespace config {
 
 using namespace pt;
 using namespace bc::client;
-using namespace bc::config;
-using namespace bc::machine;
-using namespace bc::wallet;
+using namespace bc::system;
+using namespace bc::system::config;
+using namespace bc::system::machine;
+using namespace bc::system::wallet;
 
 // property_tree is very odd in that what one might consider a node or element,
 // having a "containing" name cannot be added into another node without
@@ -96,6 +97,33 @@ ptree prop_tree(const client::history::list& rows, bool json)
 
 // balance
 
+ptree prop_list(const client::history::list& rows, const hash_digest& key)
+{
+    ptree tree;
+    uint64_t spent = 0;
+    uint64_t received = 0;
+
+    for (const auto& row: rows)
+    {
+        received = ceiling_add(received, row.value);
+
+        if (row.spend.hash() != null_hash)
+            spent = ceiling_add(spent, row.value);
+    }
+
+    tree.put("key", encode_hash(key));
+    tree.put("received", received);
+    tree.put("spent", spent);
+    return tree;
+}
+
+ptree prop_tree(const client::history::list& rows, const hash_digest& key)
+{
+    ptree tree;
+    tree.add_child("balance", prop_list(rows, key));
+    return tree;
+}
+
 ptree prop_list(const client::history::list& rows,
     const payment_address& balance_address)
 {
@@ -122,139 +150,6 @@ ptree prop_tree(const client::history::list& rows,
 {
     ptree tree;
     tree.add_child("balance", prop_list(rows, balance_address));
-    return tree;
-}
-
-// wrapper
-
-ptree prop_list(const wallet::wrapped_data& wrapper)
-{
-    ptree tree;
-    tree.put("checksum", wrapper.checksum);
-    tree.put("payload", base16(wrapper.payload));
-    tree.put("version", wrapper.version);
-    return tree;
-}
-
-ptree prop_tree(const wallet::wrapped_data& wrapper)
-{
-    ptree tree;
-    tree.add_child("wrapper", prop_list(wrapper));
-    return tree;
-}
-
-// stealth_address
-
-ptree prop_list(const stealth_address& stealth, bool json)
-{
-    // We don't serialize a "reuse key" value as this is strictly an
-    // optimization for the purpose of serialization and otherwise complicates
-    // understanding of what is actually otherwise very simple behavior.
-    // So instead we emit the reused key as one of the spend keys.
-    // This means that it is typical to see the same key in scan and spend.
-
-    const auto spends = cast<ec_compressed, ec_public>(stealth.spend_keys());
-    const auto spends_values = prop_value_list("public_key", spends, json);
-
-    ptree tree;
-    tree.put("encoded", stealth);
-    tree.put("filter", stealth.filter());
-    tree.put("scan_public_key", ec_public(stealth.scan_key()));
-    tree.put("signatures", stealth.signatures());
-    tree.add_child("spends", spends_values);
-    tree.put("version", stealth.version());
-    return tree;
-}
-
-ptree prop_tree(const stealth_address& stealth, bool json)
-{
-    ptree tree;
-    tree.add_child("stealth_address", prop_list(stealth, json));
-    return tree;
-}
-
-// stealth
-
-ptree prop_list(const client::stealth& row)
-{
-    ptree tree;
-    tree.put("ephemeral_public_key", ec_public(row.ephemeral_public_key));
-    tree.put("public_key_hash", hash160(row.public_key_hash));
-    tree.put("transaction_hash", hash256(row.transaction_hash));
-    return tree;
-}
-
-ptree prop_tree(const client::stealth& row)
-{
-    ptree tree;
-    tree.add_child("match", prop_list(row));
-    return tree;
-}
-
-ptree prop_tree(const client::stealth::list& rows, bool json)
-{
-    ptree tree;
-    tree.add_child("stealth", prop_tree_list("match", rows, json));
-    return tree;
-}
-
-// metadata
-
-ptree prop_list(const hash_digest& hash, size_t height, size_t index)
-{
-    ptree tree;
-    tree.put("hash", hash256(hash));
-    tree.put("height", height);
-    tree.put("index", index);
-    return tree;
-}
-
-ptree prop_tree(const hash_digest& hash, size_t height, size_t index)
-{
-    ptree tree;
-    tree.add_child("metadata", prop_list(hash, height, index));
-    return tree;
-}
-
-// settings
-
-ptree prop_tree(const settings_list& settings)
-{
-    ptree list;
-
-    for (const auto& setting: settings)
-        list.put(setting.first, setting.second);
-
-    ptree tree;
-    tree.add_child("settings", list);
-    return tree;
-}
-
-// uri
-
-ptree prop_tree(const bitcoin_uri& uri)
-{
-    ptree uri_props;
-
-    if (!uri.address().empty())
-        uri_props.put("address", uri.address());
-
-    if (uri.amount() != 0)
-        uri_props.put("amount", uri.amount());
-
-    if (!uri.label().empty())
-        uri_props.put("label", uri.label());
-
-    if (!uri.message().empty())
-        uri_props.put("message", uri.message());
-
-    if (!uri.r().empty())
-        uri_props.put("r", uri.r());
-
-    uri_props.put("scheme", "bitcoin");
-
-    ptree tree;
-    tree.add_child("uri", uri_props);
     return tree;
 }
 
